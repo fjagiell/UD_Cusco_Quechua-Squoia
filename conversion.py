@@ -25,9 +25,6 @@ deprel = {
     "mod": "@nmod",  # @obl, @advmod
 }
 
-# need to update sentence at the top
-# update numberings
-
 feats = {
     "+Abl": "Case=Abl",
     "+Acc": "Case=Acc",
