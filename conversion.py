@@ -57,10 +57,6 @@ def read_file(file, outfile):
             if len(row) >= 1:
                 converted_row = row
                 if "# sent_id " in row[0]:
-                    if len(current_sentence) > 2:
-                        current_sentence[2] = generate_textline(
-                            current_sentence)
-                        write_sentence(current_sentence, outfile)
                     current_sentence = [row]
                 elif "# text " in row[0]:
                     text = copy.deepcopy(row[0])
