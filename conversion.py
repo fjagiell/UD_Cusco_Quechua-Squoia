@@ -55,15 +55,17 @@ def read_file(file, outfile):
         current_sentence = []
         for row in csvreader:
             if len(row) >= 1:
-                converted_row = row
+                converted_row = copy.deepcopy(row)
                 if "# sent_id " in row[0]:
+                    if len(current_sentence) > 2:
+                        write_sentence(current_sentence, outfile)
                     current_sentence = [row]
                 elif "# text " in row[0]:
                     text = copy.deepcopy(row[0])
                     parts = text.split("=")
                     row[0] = "# text[seg] =" + parts[1]
                     current_sentence.append(row)
-                    current_sentence.append(["text = "])
+                    current_sentence.append(["# text = "])
                 else:
                     if len(row) > 6:  # if is a sentence row
                         features = row[5].split("|")
@@ -74,6 +76,8 @@ def read_file(file, outfile):
                             else:
                                 new_features.append(feat)
                         converted_row[5] = "|".join(new_features)
+                        if len(row[5]) > 1:
+                            converted_row[-1] = "feats:[" + row[5] + "]"
                     current_sentence.append(converted_row)
 
 
