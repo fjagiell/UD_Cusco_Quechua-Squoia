@@ -1,14 +1,28 @@
 import csv
 import sys
 import copy
+import os
 
 csv.field_size_limit(sys.maxsize)
 
-FILE = "conllu/squoia_qu.conllu"
-OUTFILE = "out/squoia_qu_out.conllu"
+FILE = "conllu/squoia_sample.conllu"
+OUTFILE = "out/squoia_sample_out.conllu"
 
 deprel = {
     "arg": "@obl:arg",
+    "aux": "@aux",
+    "ben": "@obl:ben",
+    "caus": "@obl:caus",
+    "co": "@conj",
+    "iobj": "@iobj",
+    "adv": "@advmod",
+    "punc": "@punct",
+    "r.disl": "@dislocated",  # ?
+    "src": "@obl:src",
+    "loc": "@nmod:loc",  # @obl:loc
+    "subj": "@csubj",  # @usubj
+    "acmp": "@nmod",  # @obl
+    "mod": "@nmod",  # @obl, @advmod
 }
 
 # need to update sentence at the top
@@ -44,56 +58,51 @@ def read_file(file, outfile):
         current_sentence = []
         for row in csvreader:
             if len(row) >= 1:
-                if "# sent_id " in row[0]:
-                    current_sentence.append(["\n"])
-                    write_sentence(current_sentence, outfile)
-                    current_sentence = [row]
                 converted_row = row
-                if len(row) > 6:  # if is a sentence row
-                    features = row[5].split("|")
-                    new_features = []
-                    for feat in features:
-                        if feat in feats:
-                            new_features.append(feats[feat])
-                        else:
-                            new_features.append(feat)
-                    converted_row[5] = "|".join(new_features)
-                    if (should_attach_suffix(row)):
-                        if len(current_sentence) > 0:
-                            converted_row = copy.deepcopy(
-                                merge_rows(converted_row,
-                                           current_sentence.pop()))
-                current_sentence.append(converted_row)
+                if "# sent_id " in row[0]:
+                    if len(current_sentence) > 2:
+                        current_sentence[2] = generate_textline(
+                            current_sentence)
+                        write_sentence(current_sentence, outfile)
+                    current_sentence = [row]
+                elif "# text " in row[0]:
+                    text = copy.deepcopy(row[0])
+                    parts = text.split("=")
+                    row[0] = "# text[seg] =" + parts[1]
+                    current_sentence.append(row)
+                    current_sentence.append(["text = "])
+                else:
+                    if len(row) > 6:  # if is a sentence row
+                        features = row[5].split("|")
+                        new_features = []
+                        for feat in features:
+                            if feat in feats:
+                                new_features.append(feats[feat])
+                            else:
+                                new_features.append(feat)
+                        converted_row[5] = "|".join(new_features)
+                    current_sentence.append(converted_row)
 
 
 def write_sentence(sentence, outfile):
+    sentence.append([])
     with open(outfile, 'a', newline='') as w:
         csvwriter = csv.writer(w, delimiter='\t')
+        print(sentence)
         csvwriter.writerows(sentence)
 
 
-def should_attach_suffix(row):
-    if row[1][0] == "-":
-        if row[7] == "ns":
-            return True
-    return False
-
-
-def merge_rows(next_row, prev_row):
-    merged_features = set(next_row[5].split("|"))
-    for feature in prev_row[5].split("|"):
-        merged_features.add(feature)
-    new_row = copy.deepcopy(prev_row)
-    new_row[1] = prev_row[1] + next_row[1][1:]
-    new_row[5] = "|".join(merged_features)
-    if len(new_row[9]) > 1:
-        new_row[9] += "|Merged=True"
-    else:
-        new_row[9] = "Merged=True"
-    return new_row
+def generate_textline(rows):
+    text = list(map(lambda x: x[1], rows[3:]))
+    print(" ".join(text))
+    return ["# text = " + " ".join(text)]
 
 
 def main():
+    try:
+        os.remove(OUTFILE)
+    except:
+        pass
     read_file(FILE, OUTFILE)
 
 
