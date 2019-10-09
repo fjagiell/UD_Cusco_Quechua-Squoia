@@ -1,0 +1,59 @@
+# sent_id = squoia_qu-s1
+# text[seg] = CÁMARA DE COMERCIO E INDUSTRIA PERUANO - ALEMANA NI -SQA -MANTA -S 
+# text = CÁMARA DE COMERCIO E INDUSTRIA PERUANO - ALEMANA NI -SQA -MANTA -S
+1	CÁMARA	_	Root	Root	NRootES	9	flm	_	_
+2	DE	_	SP	SP	_	1	--	_	_
+3	COMERCIO	_	Root	Root	NRootES	4	--	_	_
+4	E	_	SP	SP	_	2	--	_	_
+5	INDUSTRIA	_	Root	Root	NRootES	4	--	_	_
+6	PERUANO	_	Root	Root	NRootES	5	--	_	_
+7	-	_	$.	$.	_	0	punc	_	_
+8	ALEMANA	_	Root	Root	NRootES	5	--	_	_
+9	NI	_	Root	Root	VRoot	11	s.arg.claus	_	Gloss=decir
+10	-SQA	_	NS	NS	Aspect=Perf	9	ns	_	_
+11	-MANTA	_	Cas	Cas	Case=Abl	0	sntc	_	_
+12	-S	_	Amb	Amb	+IndE	11	ev	_	_
+
+# sent_id = squoia_qu-s2
+# text[seg] = Qallari -y 
+# text = Qallari -y
+1	Qallari	_	Root_VDeriv	Root_VDeriv	VRoot|+Inch	0	sntc	_	Gloss=empezar
+2	-y	_	NS	NS	+Inf	1	ns	_	_
+
+# sent_id = squoia_qu-s3
+# text[seg] = 40 wata -manta hatun napayku -ku -y 
+# text = 40 wata -manta hatun napayku -ku -y
+1	40	_	Root	Root	NRootNUM	2	qnt	_	_
+2	wata	_	Root	Root	NRoot	3	s.arg	_	Gloss=año
+3	-manta	_	Cas	Cas	Case=Abl	5	mod	_	_
+4	hatun	_	Root	Root	NRoot	5	mod	_	Gloss=grande
+5	napayku	_	Root_VDeriv	Root_VDeriv	VRoot|+Aff	0	sntc	_	Gloss=saludar
+6	-ku	_	VDeriv	VDeriv	+Rflx_Int	5	mod	_	_
+7	-y	_	NS	NS	+Inf	5	ns	_	_
+
+# sent_id = squoia_qu-s4
+# text[seg] = Kay ñawpaq 40 watakuna -ta yuyaymana -spa -qa , achkha imaymanakuna -m kapu -wa -nchik kusi -ku -na -nchik -paq -qa . 
+# text = Kay ñawpaq 40 watakuna -ta yuyaymana -spa -qa , achkha imaymanakuna -m kapu -wa -nchik kusi -ku -na -nchik -paq -qa .
+1	Kay	_	Root	Root	PrnDem	4	det	_	_
+2	ñawpaq	_	Root	Root	NRoot	4	mod	_	Gloss=antes
+3	40	_	Root	Root	NRootNUM	4	qnt	_	_
+4	watakuna	_	Root_Num	Root_Num	NRoot|+Pl	5	s.arg	_	Gloss=año
+5	-ta	_	Cas	Cas	Case=Acc	6	obj	_	_
+6	yuyaymana	_	Root_VDeriv	Root_VDeriv	VRoot|+Rem	13	sub	_	Gloss=recordar,pensar
+7	-spa	_	NS	NS	+SS	6	ns	_	_
+8	-qa	_	Amb	Amb	+Top	6	topic	_	_
+9	,	_	$.	$.	_	0	punc	_	_
+10	achkha	_	Root	Root	NRoot	11	mod	_	Gloss=mucho
+11	imaymanakuna	_	Root_Num	Root_Num	NRoot|+Pl	13	subj	_	Gloss=toda_clase_de,todos
+12	-m	_	Amb	Amb	+DirE	13	ev	_	_
+13	kapu	_	Root_VDeriv	Root_VDeriv	VRoot|+Rgr_Iprs	0	sntc	_	Gloss=ser
+14	-wa	_	VPers	VPers	+1.Obj	13	s.obj	_	_
+15	-nchik	_	VPers	VPers	+3.Subj_1.Pl.Incl.Obj	13	s.subj_obj	_	_
+16	kusi	_	Root	Root	VRoot	20	s.arg.claus	_	Gloss=alegrar
+17	-ku	_	VDeriv	VDeriv	+Rflx_Int	16	mod	_	_
+18	-na	_	NS	NS	+Obl	16	ns	_	_
+19	-nchik	_	NPers	NPers	+1.Pl.Incl.Poss	18	s.poss.subj	_	_
+20	-paq	_	Cas	Cas	Case=Ben	13	purp	_	_
+21	-qa	_	Amb	Amb	+Top	16	topic	_	_
+22	.	_	$.	$.	_	0	punc	_	_
+
