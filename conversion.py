@@ -25,6 +25,10 @@ deprel = {
     "mod": "@nmod",  # @obl, @advmod
 }
 
+upos = {
+    "Root_VDeriv": "Root",  # not sure about this
+}
+
 feats = {
     "+Abl": "Case=Abl",
     "+Acc": "Case=Acc",
@@ -45,7 +49,8 @@ feats = {
     "+Prog": "Aspect=Prog",
     "+Pst": "Tense=Past",
     "+Rflx": "Reflexive=Yes",
-    "+Sg": "Number=Sing"
+    "+Sg": "Number=Sing",
+    "+Con_Inst": "Case=Ins"
 }
 
 
@@ -78,6 +83,9 @@ def read_file(file, outfile):
                         converted_row[5] = "|".join(new_features)
                         if len(row[5]) > 1:
                             converted_row[-1] = "feats:[" + row[5] + "]"
+                        row[4] = "_"
+                        if row[3] in upos:
+                            row[3] = upos[row[3]]
                     current_sentence.append(converted_row)
 
 
