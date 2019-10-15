@@ -44,8 +44,10 @@ feats = {
     "+Pres": "Tense=Pres",
     "+Prog": "Aspect=Prog",
     "+Pst": "Tense=Past",
-    "+Rflx": "Reflexive=Yes",
-    "+Sg": "Number=Sing"
+    "+Rflx": "Reflex=Yes",
+    "+Sg": "Number=Sing",
+    "+Poss" : "Poss=Yes",
+    "+Inch" : "Aspect=Inch"
 }
 
 
