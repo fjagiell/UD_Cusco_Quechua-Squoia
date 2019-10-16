@@ -52,7 +52,11 @@ feats = {
     "+Pst": "Tense=Past",
     "+Rflx": "Reflexive=Yes",
     "+Sg": "Number=Sing",
-    "+Con_Inst": "Case=Ins"
+    "+Con_Inst": "Case=Ins",
+    "+Rflx": "Reflex=Yes",
+    "+Sg": "Number=Sing",
+    "+Poss": "Poss=Yes",
+    "+Inch": "Aspect=Inch"
 }
 
 
