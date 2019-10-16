@@ -20,6 +20,7 @@ rule cas {
   commands{
     R.form = R.form + C.form;
     R.Case = C.Case;
+    
     del_node C
   }
 }
