@@ -1,0 +1,8 @@
+# sent_id = DW-s2
+# text[seg] = Wiñarqu -y -manta -wan miryukuna -manta -wan 
+# text = 
+1	Wiñarqu-y-manta	_	Root	Root_VDeriv	+Rptn=true|Case=Abl|VRoot=true	_	_	_	Gloss=desarollar,crecer
+2	-wan	_	Cas	Cas	Case=Ins	_	_	_	_
+3	miryukuna-manta	_	Root	Root_Num	+Pl=true|Case=Abl|NRootES=true	_	_	_	_
+4	-wan	_	Cas	Cas	Case=Ins	_	_	_	_
+

@@ -1,0 +1,27 @@
+rule mergens {
+  pattern {
+    V [upos=Root];
+    NS [upos=NS];
+    V -[ns]-> NS;
+  }
+
+  commands {
+    V.form = V.form + NS.form;
+    del_node NS;
+  }
+}
+
+rule cas { 
+  pattern {
+    R [upos=Root];
+    C [upos=Cas];
+    C -[s.arg]-> R;
+  }
+  commands{
+    R.form = R.form + C.form;
+    R.Case = C.Case;
+    del_node C
+  }
+}
+
+strat main { Seq (Onf(mergens), Onf(cas)) }

@@ -1,0 +1,9 @@
+# sent_id = DW-s2
+# text = Wiñarqu -y -manta -wan miryukuna -manta -wan 
+1	Wiñarqu	_	Root_VDeriv	Root_VDeriv	VRoot|+Rptn	3	s.arg.claus	_	Gloss=desarollar,crecer
+2	-y	_	NS	NS	+Inf	1	ns	_	_
+3	-manta	_	Cas	Cas	+Abl	6	co	_	_
+4	-wan	_	Cas	Cas	+Con_Inst	3	s.co	_	_
+5	miryukuna	_	Root_Num	Root_Num	NRootES|+Pl	6	s.arg	_	_
+6	-manta	_	Cas	Cas	+Abl	0	sntc	_	_
+7	-wan	_	Cas	Cas	+Con_Inst	6	s.co	_	_

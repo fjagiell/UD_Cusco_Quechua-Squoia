@@ -5,8 +5,8 @@ import os
 
 csv.field_size_limit(sys.maxsize)
 
-FILE = "conllu/squoia_sample.conllu"
-OUTFILE = "out/squoia_sample_out.conllu"
+FILE = "conllu/test.conllu"
+OUTFILE = "out/test.conllu"
 
 deprel = {
     "arg": "@obl:arg",
@@ -23,10 +23,12 @@ deprel = {
     "subj": "@csubj",  # @usubj
     "acmp": "@nmod",  # @obl
     "mod": "@nmod",  # @obl, @advmod
+    "s.arg.claus": "s.arg"
 }
 
 upos = {
-    "Root_VDeriv": "Root",  # not sure about this
+    "Root_VDeriv": "Root",
+    "Root_Num": "Root"
 }
 
 feats = {
@@ -80,19 +82,24 @@ def read_file(file, outfile):
                                 new_features.append(feats[feat])
                             else:
                                 new_features.append(feat)
+                        if converted_row[3] == "Root":
+                            new_features.append("Case=Root")
                         converted_row[5] = "|".join(new_features)
                         if len(row[5]) > 1:
-                            converted_row[-1] = "feats:[" + row[5] + "]"
-                        row[4] = "_"
+                            converted_row[-1] = "feats=[" + row[5] + "]"
                         if row[3] in upos:
-                            row[3] = upos[row[3]]
+                            converted_row[3] = upos[row[3]]
+                        if row[7] in deprel:
+                            converted_row[7] = deprel[row[7]]
+                        converted_row[-1] = row[-1].strip()
                     current_sentence.append(converted_row)
+    write_sentence(current_sentence, outfile)
 
 
 def write_sentence(sentence, outfile):
     sentence.append([])
-    with open(outfile, 'a', newline='') as w:
-        csvwriter = csv.writer(w, delimiter='\t')
+    with open(outfile, 'a', newline='\n', encoding='utf-8') as w:
+        csvwriter = csv.writer(w, delimiter='\t',  lineterminator='\n')
         print(sentence)
         csvwriter.writerows(sentence)
 
