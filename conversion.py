@@ -6,7 +6,7 @@ import os
 csv.field_size_limit(sys.maxsize)
 
 FILE = "conllu/test.conllu"
-OUTFILE = "out/test.conllu"
+OUTFILE = "conversion_out/test.conllu"
 
 deprel = {
     "arg": "@obl:arg",
@@ -23,7 +23,9 @@ deprel = {
     "subj": "@csubj",  # @usubj
     "acmp": "@nmod",  # @obl
     "mod": "@nmod",  # @obl, @advmod
-    "s.arg.claus": "s.arg"
+    "s.arg.claus": "s.arg",
+    "punc": "punct",
+    "sntc": "root"
 }
 
 xpos = {
@@ -33,7 +35,8 @@ xpos = {
 
 upos = {
     "Root_VDeriv": "VERB",
-    "Root_Num": "NUM"
+    "Root_Num": "NUM",
+    "VDeriv": "VERB"
 }
 
 feats = {
@@ -63,7 +66,8 @@ feats = {
     "+Rflx": "Reflex=Yes",
     "+Poss": "Poss=Yes",
     "+Inch": "Aspect=Inch",
-    "+Inf": "VerbForm=Inf"
+    "+Inf": "VerbForm=Inf",
+    "+DirE": "Evident=DirE"
 }
 
 
@@ -83,7 +87,6 @@ def read_file(file, outfile):
                     parts = text.split("=")
                     row[0] = "# text[seg] =" + parts[1]
                     current_sentence.append(row)
-                    # current_sentence.append(["# text = "])
                 else:
                     if len(row) > 6:  # if is a sentence row
                         features = row[5].split("|")
@@ -91,8 +94,12 @@ def read_file(file, outfile):
                         for feat in features:
                             if feat in feats:
                                 new_features.append(feats[feat])
-                        # if "Root" in converted_row[3]:
-                        #     new_features.append("Case=Root")
+                            else:
+                                split_feat = feat.split(".")
+                                if len(split_feat) > 1:
+                                    for f in split_feat:
+                                        if f in feats:
+                                            new_features.append(feats[f])
                         if len(new_features) < 1:
                             converted_row[5] = "_"
                         else:
@@ -110,6 +117,8 @@ def read_file(file, outfile):
                             converted_row[4] = xpos[row[4]]
                         if row[7] in deprel:
                             converted_row[7] = deprel[row[7]]
+                        if row[7] == "punc":
+                            converted_row[3] = "PUNCT"
                         converted_row[-1] = row[-1].strip()
                     current_sentence.append(converted_row)
     write_sentence(current_sentence, outfile)

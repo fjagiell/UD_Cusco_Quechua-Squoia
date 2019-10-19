@@ -9,6 +9,7 @@ rule mergens {
     V.form = V.form + NS.form;
     V.VerbForm = NS.VerbForm;
 
+    shift NS ==> V;
     del_node NS;
   }
 }
@@ -23,6 +24,7 @@ rule cas {
     R.form = R.form + C.form;
     R.Case = C.Case;
     
+    shift C ==> R;
     del_node C
   }
 }
