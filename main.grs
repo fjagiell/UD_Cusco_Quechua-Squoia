@@ -1,19 +1,21 @@
 rule mergens {
   pattern {
-    V [upos=Root];
+    V [xpos=Root];
     NS [upos=NS];
     V -[ns]-> NS;
   }
 
   commands {
     V.form = V.form + NS.form;
+    V.VerbForm = NS.VerbForm;
+
     del_node NS;
   }
 }
 
 rule cas { 
   pattern {
-    R [upos=Root];
+    R [xpos=Root];
     C [upos=Cas];
     C -[s.arg]-> R;
   }
