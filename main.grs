@@ -13,20 +13,72 @@ rule mergens {
     del_node NS;
   }
 }
-
+ 
 rule cas { 
   pattern {
-    R [xpos=Root];
+    Root [xpos=Root];
     C [upos=Cas];
-    C -[s.arg]-> R;
+    C -[s.arg]-> Root;
   }
   commands{
-    R.form = R.form + C.form;
-    R.Case = C.Case;
+    Root.form = Root.form + C.form;
+    Root.Case = C.Case;
     
-    shift C ==> R;
-    del_node C
+    shift C ==> Root;
+    del_node C;
   }
 }
 
-strat main { Seq (Onf(mergens), Onf(cas)) }
+rule suffix {
+  pattern { 
+    Root [xpos=Root];
+    Suffix [xpos=SUFFIX];
+    Root -[s.poss.subj]-> Suffix;
+  }
+  commands{
+    Root.form = Root.form + Suffix.form;
+    shift Suffix ==> Root;
+    del_node Suffix;
+  }
+}
+
+rule suffix2 {
+  pattern { 
+    Root [xpos=Root];
+    Suffix [xpos=SUFFIX];
+    Root -[poss.subj]-> Suffix;
+  }
+  commands{
+    Root.form = Root.form + Suffix.form;
+    shift Suffix ==> Root;
+    del_node Suffix;
+  }
+}
+
+rule suffix3 {
+  pattern { 
+    Root [xpos=Root];
+    Suffix [xpos=SUFFIX];
+    Root -[s.subj]-> Suffix;
+  }
+  commands{
+    Root.form = Root.form + Suffix.form;
+    shift Suffix ==> Root;
+    del_node Suffix;
+  }
+}
+
+
+rule vderiv {
+  pattern{
+    Root [xpos=Root];
+    Vderiv [xpos=VDeriv];
+    Root -> Vderiv;
+  }
+  commands{
+    Root.form = Root.form + Vderiv.form;
+    shift Vderiv ==> Root;
+    del_node Vderiv;
+  }
+}
+strat main { Seq (Onf(mergens), Onf(suffix),Onf(suffix2), Onf(suffix3),Onf(cas), Onf(vderiv)) }
