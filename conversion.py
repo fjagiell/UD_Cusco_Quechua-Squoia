@@ -2,12 +2,13 @@ import csv
 import sys
 import copy
 import os
+import argparse
 from Word import Word
 
 csv.field_size_limit(sys.maxsize)
 
-FILE = "conllu/test.conllu"
-OUTFILE = "conversion_out/test.conllu"
+# FILE = "conllu/test.conllu"
+# OUTFILE = "conversion_out/test.conllu"
 
 
 def read_file(file, outfile):
@@ -30,18 +31,25 @@ def write_line(line, outfile):
         csvwriter.writerow(line)
 
 
-def generate_textline(rows):
-    text = list(map(lambda x: x[1], rows[3:]))
-    # print(" ".join(text))
-    return ["# text = " + " ".join(text)]
+parser = argparse.ArgumentParser()
+parser.add_argument("-i", "--input", help="input file")
+parser.add_argument(
+    "-o", "--output", help="output file. default is <input file>.out")
 
 
 def main():
+    # python conversion.py -i conllu/test.conllu -o conversion_out/test.conllu
+    args = parser.parse_args()
+    INFILE = args.input
+    if args.output:
+        OUTFILE = args.output
+    else:
+        OUTFILE = INFILE + ".out"
     try:
         os.remove(OUTFILE)
     except:
         pass
-    read_file(FILE, OUTFILE)
+    read_file(INFILE, OUTFILE)
 
 
 if __name__ == '__main__':
