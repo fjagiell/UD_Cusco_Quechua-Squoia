@@ -127,7 +127,11 @@ deprel_dict = {
     "acmp": "@nmod",  # @obl
     "mod": "@nmod",  # @obl, @advmod
     "s.arg.claus": "s.arg",
-    "sntc": "root"
+    "sntc": "root",
+    "abbrev": "Abbr=Yes", #feel like should be in feats instead
+    "det": "@det",
+    "goal": "@goal",
+    "hab": "@hab"
 }
 
 xpos_dict = {
@@ -172,5 +176,9 @@ feats_dict = {
     "+DirE": "Evident=DirE",
     "Sg": "Number=Sing",
     "Poss": "Possessive=Yes",
-    "+3": "Person=3"
+    "+3": "Person=3",
+    "FLM": "Foreign=Yes",
+    "+Con_Intr": "PronType=Int",
+    "+Aff": "Aspect=Affective",
+    "+Ag": "Case=Agentive"
 }
