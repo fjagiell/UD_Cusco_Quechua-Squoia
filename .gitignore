@@ -1,3 +1,5 @@
 __pycache__
 conversion_out
 grew_out
+conllu/test.conllu
+cleanup_out/test.conllu
