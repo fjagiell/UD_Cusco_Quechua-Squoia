@@ -48,6 +48,7 @@ rule suffix {
   }
   commands{
     Root.form = Root.form + Suffix.form;
+    
     shift Suffix ==> Root;
     del_node Suffix;
   }
