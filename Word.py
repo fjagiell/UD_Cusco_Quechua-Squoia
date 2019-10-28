@@ -109,7 +109,7 @@ class Word:
                     current = "".join(currents)
 
 
-suffixes = ["s.neg", "s.obj", "s.co", "s.subj", "s.subj_iobj", "s.poss.subj"]
+suffixes = ["s.neg", "s.obj", "s.subj", "s.subj_iobj", "s.poss.subj"]
 
 deprel_dict = {
     "arg": "@obl:arg",
