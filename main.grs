@@ -1,7 +1,7 @@
-rule mergens {
+rule mergens_vf {
   pattern {
     V [xpos=Root];
-    NS [upos=NS];
+    NS [upos=NS, VerbForm];
     V -[ns]-> NS;
   }
 
@@ -13,6 +13,23 @@ rule mergens {
     del_node NS;
   }
 }
+
+rule mergens_as {
+  pattern {
+    V [xpos=Root];
+    NS [upos=NS, Aspect];
+    V -[ns]-> NS;
+  }
+
+  commands {
+    V.form = V.form + NS.form;
+    V.Aspect = NS.Aspect;
+
+    shift NS ==> V;
+    del_node NS;
+  }
+}
+
  
 rule cas { 
   pattern {
@@ -44,7 +61,7 @@ rule amb{
   pattern{
     A [upos=Amb];
     Root [xpos=Root];
-    Root -[ev]-> A;
+    Root -[ev|topic]-> A;
   }
   commands{
     A.upos = PART;
@@ -67,6 +84,31 @@ rule suffix {
   }
 }
 
+rule nsubj{
+  pattern{
+    N [upos=NOUN];
+    Root [upos=VERB];
+    Root -[poss.subj]-> N;
+  }
+  commands{
+    del_edge Root -[poss.subj]-> N;
+    add_edge Root -[nsubj]-> N;
+  }
+}
+
+
+rule csubj{
+  pattern{
+    V [xpos=Root,upos=VERB];
+    Root [upos=VERB];
+    V -[poss.subj]-> Root;
+  }
+  commands{
+    del_edge V -[poss.subj]-> Root;
+    add_edge V -[csubj]-> Root;
+  }
+}
+
 
 rule vderiv {
   pattern{
@@ -80,4 +122,21 @@ rule vderiv {
     del_node Vderiv;
   }
 }
-strat main { Seq (Onf(mergens), Onf(suffix), Onf(cas), Onf(case_cleanup), Onf(vderiv), Onf(amb)) }
+
+rule pred{
+  pattern{
+    Root [upos=VERB];
+    O [upos=VERB];
+    Root -[pred]-> O;
+  }
+  commands{
+    del_edge Root -[pred]-> O;
+    add_edge Root -[dep]-> O;
+  }
+}
+
+
+
+strat main { Seq (Onf(mergens_vf), Onf(mergens_as), Onf(suffix), Onf(cas), Onf(case_cleanup), Onf(vderiv), Onf(amb), Onf(csubj), Onf(nsubj), Onf(pred)) }
+
+
