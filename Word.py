@@ -180,5 +180,10 @@ feats_dict = {
     "FLM": "Foreign=Yes",
     "+Con_Intr": "PronType=Int",
     "+Aff": "Aspect=Affective",
-    "+Ag": "Case=Agentive"
+    "+Ag": "Case=Agentive",
+    "Asmp_Emph": "Evident=Assumptive",
+    "+Def": "Definite=Def",
+    "+Des": "Mood=Desiderative",
+    "+Dim": "Degree=Dim",
+    "+Dir": "Motion=Dir"
 }
