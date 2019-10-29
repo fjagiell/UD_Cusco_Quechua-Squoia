@@ -23,7 +23,7 @@ class Word:
             self._misc.append("Feats=" + "|".join(self._feats))
         self._addition = None
         self._suffix = False
-        self.convert()
+        # self.convert()
 
     def upos(self):
         return self._upos
@@ -34,8 +34,8 @@ class Word:
     def deprel(self):
         return self._deprel
 
-    def misc(self):
-        return self.misc
+    def form(self):
+        return self._form
 
     def set_feats(self, feature_list):
         self._feats = feature_list
@@ -54,10 +54,13 @@ class Word:
         self.convert_xpos()
         self.convert_feats()
         self.convert_upos()
-        self.check_punct()
+        self.convert_punct()
         self.insert_addition()
         if self.deprel() in suffixes:
             self._xpos = "SUFFIX"
+
+    def cleanup(self):
+        self.cleanup_form()
 
     def convert_deprel(self):
         if self._deprel in deprel_dict:
@@ -86,7 +89,7 @@ class Word:
         if self._upos in upos_dict:
             self._upos = upos_dict[self._upos]
 
-    def check_punct(self):
+    def convert_punct(self):
         if self._deprel == "@punct":
             self._upos = "PUNCT"
 
@@ -108,8 +111,11 @@ class Word:
                     currents[0] += "[" + self._addition + "]"
                     current = "".join(currents)
 
+    def cleanup_form(self):
+        self._form = self._form.replace("-", "")
 
-suffixes = ["s.neg", "s.obj", "s.co", "s.subj", "s.subj_iobj", "s.poss.subj"]
+
+suffixes = ["s.neg", "s.obj", "s.subj", "s.subj_iobj", "s.poss.subj"]
 
 deprel_dict = {
     "arg": "@obl:arg",
@@ -128,7 +134,7 @@ deprel_dict = {
     "mod": "@nmod",  # @obl, @advmod
     "s.arg.claus": "s.arg",
     "sntc": "root",
-    "abbrev": "Abbr=Yes", #feel like should be in feats instead
+    "abbrev": "Abbr=Yes",  # feel like should be in feats instead
     "det": "@det",
     "goal": "@goal",
     "hab": "@hab"

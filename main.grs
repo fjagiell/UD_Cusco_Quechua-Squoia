@@ -18,7 +18,7 @@ rule cas {
   pattern {
     Root [xpos=Root];
     C [upos=Cas];
-    C -[s.arg]-> Root;
+    C -[s.arg|poss.subj]-> Root;
   }
   commands{
     Root.form = Root.form + C.form;
@@ -29,40 +29,39 @@ rule cas {
   }
 }
 
+rule case_cleanup {
+  pattern {
+    Root [xpos=Root];
+    C [upos=Cas];
+    Root -[s.co|s.arg]-> C;
+  }
+  commands{
+    C.upos = ADP;
+  }
+}
+
+rule amb{
+  pattern{
+    A [upos=Amb];
+    Root [xpos=Root];
+    Root -[ev]-> A;
+  }
+  commands{
+    A.upos = PART;
+    del_edge Root -[ev]-> A;
+    add_edge Root -[discourse]-> A;
+  }
+}
+
 rule suffix {
   pattern { 
     Root [xpos=Root];
     Suffix [xpos=SUFFIX];
-    Root -[s.poss.subj]-> Suffix;
+    Root -[s.poss.subj|poss.subj|s.subj]-> Suffix;
   }
   commands{
     Root.form = Root.form + Suffix.form;
-    shift Suffix ==> Root;
-    del_node Suffix;
-  }
-}
 
-rule suffix2 {
-  pattern { 
-    Root [xpos=Root];
-    Suffix [xpos=SUFFIX];
-    Root -[poss.subj]-> Suffix;
-  }
-  commands{
-    Root.form = Root.form + Suffix.form;
-    shift Suffix ==> Root;
-    del_node Suffix;
-  }
-}
-
-rule suffix3 {
-  pattern { 
-    Root [xpos=Root];
-    Suffix [xpos=SUFFIX];
-    Root -[s.subj]-> Suffix;
-  }
-  commands{
-    Root.form = Root.form + Suffix.form;
     shift Suffix ==> Root;
     del_node Suffix;
   }
@@ -81,4 +80,4 @@ rule vderiv {
     del_node Vderiv;
   }
 }
-strat main { Seq (Onf(mergens), Onf(suffix),Onf(suffix2), Onf(suffix3),Onf(cas), Onf(vderiv)) }
+strat main { Seq (Onf(mergens), Onf(suffix), Onf(cas), Onf(case_cleanup), Onf(vderiv), Onf(amb)) }

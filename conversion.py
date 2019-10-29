@@ -15,14 +15,12 @@ def read_file(file, outfile):
     with open(file, newline='') as r:
         csvreader = csv.reader(r, delimiter='\t')
         for row in csvreader:
-            if len(row) >= 1:
-                if "# text" in row or "# sent_id" in row:
-                    write_line(row, outfile)
-                elif len(row) > 8:
-                    converted_row = Word(row)
-                    write_line(converted_row.to_row(), outfile)
+            if len(row) >= 8:
+                converted_row = Word(row)
+                converted_row.convert()
+                write_line(converted_row.to_row(), outfile)
             else:
-                write_line([], outfile)
+                write_line(row, outfile)
 
 
 def write_line(line, outfile):
