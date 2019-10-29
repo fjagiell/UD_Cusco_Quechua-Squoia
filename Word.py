@@ -58,9 +58,13 @@ class Word:
         self.insert_addition()
         if self.deprel() in suffixes:
             self._xpos = "SUFFIX"
+        if self._upos == "VERB":
+            self.insert_verbform()
+            self.insert_aspect()
 
     def cleanup(self):
         self.cleanup_form()
+        self.cleanup_dummies()
 
     def convert_deprel(self):
         if self._deprel in deprel_dict:
@@ -75,7 +79,7 @@ class Word:
         for feat in self._feats:
             if feat == "VRoot" and self._upos == "Root":
                 self._upos = "VERB"
-            if feat == "NRoot" and self._upos == "Root":
+            if (feat == "NRoot" or feat == "NRootES") and self._upos == "Root":
                 self._upos = "NOUN"
             if feat in feats_dict:
                 new_features.append(feats_dict[feat])
@@ -92,6 +96,18 @@ class Word:
     def convert_punct(self):
         if self._deprel == "@punct":
             self._upos = "PUNCT"
+
+    def insert_verbform(self):
+        for item in self._feats:
+            if "VerbForm" in item:
+                return
+        self._feats.append("VerbForm=NONE")
+
+    def insert_aspect(self):
+        for item in self._feats:
+            if "Aspect" in item:
+                return
+        self._feats.append("Aspect=NONE")
 
     def dotted_feat(self, split_feat):
         more_feats = []
@@ -113,6 +129,13 @@ class Word:
 
     def cleanup_form(self):
         self._form = self._form.replace("-", "")
+
+    def cleanup_dummies(self):
+        new_feats = []
+        for feat in self._feats:
+            if "=NONE" not in feat:
+                new_feats.append(feat)
+        return new_feats
 
 
 suffixes = ["s.neg", "s.obj", "s.subj", "s.subj_iobj", "s.poss.subj"]
