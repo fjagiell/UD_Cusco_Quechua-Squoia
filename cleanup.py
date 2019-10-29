@@ -3,6 +3,7 @@ import csv
 from Word import Word
 import conversion
 from Sentence import Sentence
+import argparse
 
 
 def remove_xpos(line):
@@ -10,13 +11,16 @@ def remove_xpos(line):
     return line
 
 
-def clean_it(f):
-    filename = f.split("/")[-1]
-    write_file = "cleanup_out/" + filename
-    try:
-        os.remove(write_file)
-    except:
-        pass
+def clean_it(f, write_to_file):
+    if write_to_file:
+        filename = f.split("/")[-1]
+        write_file = "cleanup_out/" + filename
+        try:
+            os.remove(write_file)
+        except:
+            pass
+    else:
+        write_file = ""
     sentence = None
     with open(f, newline='') as r:
         csvreader = csv.reader(r, delimiter='\t')
@@ -33,35 +37,35 @@ def clean_it(f):
                 elif "# text = " in row[0]:
                     sentence.set_seg(row[0])
             else:
-                conversion.write_line(row, write_file)
+                if write_to_file:
+                    conversion.write_line(row, write_file)
         if sentence:
             finish_sentence(sentence, write_file)
 
 
 def finish_sentence(sentence, f):
-    conversion.write_line([sentence.id()], f)
-    conversion.write_line([sentence.seg()], f)
-    sentence_converted = calc_sentence(sentence)
-    conversion.write_line([sentence_converted], f)
-    for word in sentence.words():
-        conversion.write_line(word.to_row(), f)
+    if f == "":
+        print(sentence)
+    else:
+        conversion.write_line([sentence.id()], f)
+        conversion.write_line([sentence.seg()], f)
+        conversion.write_line([sentence.converted()], f)
+        for word in sentence.words():
+            conversion.write_line(word.to_row(), f)
 
 
-def calc_sentence(sentence):
-    full_sentence = ["# text ="]
-    for word in sentence.words():
-        full_sentence.append(word.form())
-    return " ".join(full_sentence)
+parser = argparse.ArgumentParser()
+parser.add_argument("-all", default=False, action="store_true",
+                    help="runs through all files in grew_out and places results in cleanup_out")
 
 
 def main():
+    args = parser.parse_args()
     directory = os.fsencode("grew_out/")
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
         if filename.endswith(".conllu"):
-            clean_it("grew_out/" + filename)
-        else:
-            continue
+            clean_it("grew_out/" + filename, args.all)
 
 
 if __name__ == '__main__':
