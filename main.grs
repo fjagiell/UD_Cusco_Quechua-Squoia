@@ -1,6 +1,6 @@
 rule mergens_vf {
   pattern {
-    V [xpos=Root];
+    V [upos=VERB|NOUN];
     NS [upos=NS, VerbForm];
     V -[ns]-> NS;
   }
@@ -61,11 +61,11 @@ rule amb{
   pattern{
     A [upos=Amb];
     Root [xpos=Root];
-    Root -[ev|topic]-> A;
+    e: Root -[ev|topic]-> A;
   }
   commands{
     A.upos = PART;
-    del_edge Root -[ev]-> A;
+    del_edge e;
     add_edge Root -[discourse]-> A;
   }
 }
@@ -74,7 +74,7 @@ rule suffix {
   pattern { 
     Root [xpos=Root];
     Suffix [xpos=SUFFIX];
-    Root -[s.poss.subj|poss.subj|s.subj]-> Suffix;
+    Root -[s.poss.subj|poss.subj|s.subj|s.poss]-> Suffix;
   }
   commands{
     Root.form = Root.form + Suffix.form;
@@ -135,8 +135,20 @@ rule pred{
   }
 }
 
+rule det {
+  pattern{
+    Det [upos=DET];
+    N [upos=NOUN];
+    N -[p.arg]-> Det;
+  }
+  commands{
+    del_edge N -[p.arg]-> Det;
+    add_edge N -[det]-> Det;
+  }
+}
 
 
-strat main { Seq (Onf(mergens_vf), Onf(mergens_as), Onf(suffix), Onf(cas), Onf(case_cleanup), Onf(vderiv), Onf(amb), Onf(csubj), Onf(nsubj), Onf(pred)) }
+
+strat main { Seq (Onf(mergens_vf), Onf(mergens_as), Onf(suffix), Onf(cas), Onf(case_cleanup), Onf(vderiv), Onf(amb), Onf(det), Onf(csubj), Onf(nsubj), Onf(pred)) }
 
 

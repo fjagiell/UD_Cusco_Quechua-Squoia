@@ -77,10 +77,15 @@ class Word:
     def convert_feats(self):
         new_features = []
         for feat in self._feats:
-            if feat == "VRoot" and self._upos == "Root":
+            if (feat == "VRoot" or feat == "Root_VS"):
                 self._upos = "VERB"
-            if (feat == "NRoot" or feat == "NRootES") and self._upos == "Root":
+            if (feat == "NRoot" or feat == "NRootES"):
                 self._upos = "NOUN"
+            if feat == "NRootNUM":
+                self._upos = "NUM"
+            if feat == "PrnDem":
+                new_features.append("PronType=Det")
+                self._upos = "DET"
             if feat in feats_dict:
                 new_features.append(feats_dict[feat])
             else:
@@ -138,7 +143,7 @@ class Word:
         return new_feats
 
 
-suffixes = ["s.neg", "s.obj", "s.subj", "s.subj_iobj", "s.poss.subj"]
+suffixes = ["s.neg", "s.obj", "s.subj", "s.subj_iobj", "s.poss.subj", "s.poss"]
 
 deprel_dict = {
     "arg": "@obl:arg",
@@ -165,13 +170,15 @@ deprel_dict = {
 
 xpos_dict = {
     "Root_VDeriv": "Root",
-    "Root_Num": "Root"
+    "Root_Num": "Root",
+    "Root_VS": "Root"
 }
 
 upos_dict = {
     "Root_VDeriv": "VERB",
     "Root_Num": "NUM",
-    "VDeriv": "VERB"
+    "VDeriv": "VERB",
+    "NRootNUM": "NUM",
 }
 
 feats_dict = {
@@ -209,5 +216,10 @@ feats_dict = {
     "FLM": "Foreign=Yes",
     "+Con_Intr": "PronType=Int",
     "+Aff": "Aspect=Affective",
-    "+Ag": "Case=Agentive"
+    "+Ag": "Case=Agentive",
+    "Asmp_Emph": "Evident=Assumptive",
+    "+Def": "Definite=Def",
+    "+Des": "Mood=Desiderative",
+    "+Dim": "Degree=Dim",
+    "+Dir": "Motion=Dir"
 }
