@@ -216,10 +216,11 @@ feats_dict = {
     "FLM": "Foreign=Yes",
     "+Con_Intr": "PronType=Int",
     "+Aff": "Aspect=Affective",
-    "+Ag": "Case=Agentive",
+    "+Ag": "VerbForm=Vnoun|Derivation=Ag",
     "Asmp_Emph": "Evident=Assumptive",
     "+Def": "Definite=Def",
     "+Des": "Mood=Desiderative",
     "+Dim": "Degree=Dim",
-    "+Dir": "Motion=Dir"
+    "+Dir": "Motion=Dir",
+    "+Distr": "Case=Distr"
 }
