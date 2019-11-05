@@ -211,12 +211,11 @@ feats_dict = {
     "+Inf": "VerbForm=Inf",
     "+DirE": "Evident=DirE",
     "Sg": "Number=Sing",
-    "Poss": "Possessive=Yes",
     "+3": "Person=3",
     "FLM": "Foreign=Yes",
-    "+Con_Intr": "PronType=Int",
+    "+Con_Intr": "",
     "+Aff": "Aspect=Affective",
-    "+Ag": "VerbForm=Vnoun|Derivation=Ag",
+    "+Ag": "VerbForm=Vnoun|Deriv=Ag",
     "Asmp_Emph": "Evident=Assumptive",
     "+Def": "Definite=Def",
     "+Des": "Mood=Desiderative",
@@ -232,7 +231,7 @@ feats_dict = {
     "_Neg": "Polarity=Neg",
     "+Lim": "Case=Lim",
     "+Obl": "Mood=Obligative",
-    "+Rptn": "Aspect=Rptn",
+    "+Rptn": "Deriv=Rptn",
     "+Term": "Case=Term",
     "+Vdim": "Degree=Dim"
     "+Top": "TOP"
