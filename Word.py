@@ -220,7 +220,20 @@ feats_dict = {
     "Asmp_Emph": "Evident=Assumptive",
     "+Def": "Definite=Def",
     "+Des": "Mood=Desiderative",
-    "+Dim": "Degree=Dim",
     "+Dir": "Motion=Dir",
-    "+Distr": "Case=Distr"
+    "+Distr": "Case=Distr",
+    "+1.Pl.Excl": "1+EXCL",
+    "+Foc": "FOC",
+    "+Fact": "Evident=Fact",
+    "+1.Pl.Incl": "1+INCL",
+    "+IndE": "Evident=IndE",
+    "+DS": "DS",
+    "+SS": "SS",
+    "_Neg": "Polarity=Neg",
+    "+Lim": "Case=Lim",
+    "+Obl": "Mood=Obligative",
+    "+Rptn": "Aspect=Rptn",
+    "+Term": "Case=Term",
+    "+Vdim": "Degree=Dim"
+    "+Top": "TOP"
 }
