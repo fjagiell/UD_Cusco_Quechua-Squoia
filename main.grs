@@ -30,8 +30,8 @@ rule mergens_as {
   }
 }
 
- 
-rule cas { 
+
+rule cas {
   pattern {
     Root [xpos=Root];
     C [upos=Cas];
@@ -40,7 +40,7 @@ rule cas {
   commands{
     Root.form = Root.form + C.form;
     Root.Case = C.Case;
-    
+
     shift C ==> Root;
     del_node C;
   }
@@ -61,7 +61,7 @@ rule amb{
   pattern{
     A [upos=Amb];
     Root [xpos=Root];
-    e: Root -[ev|topic]-> A;
+    e: Root -[ev|topic|taq]-> A;
   }
   commands{
     A.upos = PART;
@@ -71,7 +71,7 @@ rule amb{
 }
 
 rule suffix {
-  pattern { 
+  pattern {
     Root [xpos=Root];
     Suffix [xpos=SUFFIX];
     Root -[s.poss.subj|poss.subj|s.subj|s.poss]-> Suffix;
@@ -150,5 +150,3 @@ rule det {
 
 
 strat main { Seq (Onf(mergens_vf), Onf(mergens_as), Onf(suffix), Onf(cas), Onf(case_cleanup), Onf(vderiv), Onf(amb), Onf(det), Onf(csubj), Onf(nsubj), Onf(pred)) }
-
-
