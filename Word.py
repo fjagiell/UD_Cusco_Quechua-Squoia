@@ -233,6 +233,6 @@ feats_dict = {
     "+Obl": "Mood=Obligative",
     "+Rptn": "Deriv=Rptn",
     "+Term": "Case=Term",
-    "+Vdim": "Degree=Dim"
+    "+Vdim": "Degree=Dim",
     "+Top": "TOP"
 }
