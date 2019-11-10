@@ -181,7 +181,7 @@ deprel_dict = {
     "caus": "@obl:caus",
     "co": "@conj",
     "iobj": "@iobj",
-    "adv": "@advmod",
+    # "adv": "@advmod",
     "punc": "@punct",
     "r.disl": "@dislocated",  # ?
     "src": "@obl:src",
