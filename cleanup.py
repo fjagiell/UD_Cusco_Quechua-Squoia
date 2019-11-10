@@ -6,11 +6,6 @@ from Sentence import Sentence
 import argparse
 
 
-def remove_xpos(line):
-    line[4] = "_"
-    return line
-
-
 def clean_it(f, write_to_file):
     if write_to_file:
         filename = f.split("/")[-1]
@@ -44,6 +39,7 @@ def clean_it(f, write_to_file):
 
 
 def finish_sentence(sentence, f):
+    sentence.cleanup_punct()
     if f == "":
         print(sentence)
     else:

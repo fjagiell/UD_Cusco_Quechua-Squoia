@@ -4,6 +4,7 @@ class Sentence:
         self._id = sent_id
         self._words = []
         self._sentence_converted = self.calc_sentence()
+        self._root = "-1"
 
     def append_word(self, word):
         self._words.append(word)
@@ -20,15 +21,26 @@ class Sentence:
     def id(self):
         return self._id
 
+    def find_root(self):
+        for item in self._words:
+            if item.deprel() == "root":
+                return item.index()
+        return "none"
+
     def sentence_converted(self):
         return self._sentence_converted
+
+    def cleanup_punct(self):
+        self._root = self.find_root()
+        if self._words[-1].upos() == "PUNCT":
+            self._words[-1].set_head(self._root)
 
     def __str__(self):
         w = []
         for word in self._words:
             w.extend(word.to_row())
             w.append("\n")
-        return self._id + "\n" + self._text_seg + "\n" + self.sentence_converted() + "\n" + " ".join(w) + "\n"
+        return str(self._id) + "\n" + self._text_seg + "\n" + self.sentence_converted() + "\n" + " ".join(w) + "\n"
 
     def calc_sentence(self):
         full_sentence = ["# text = "]

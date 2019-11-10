@@ -25,6 +25,9 @@ class Word:
         self._suffix = False
         # self.convert()
 
+    def index(self):
+        return self._index
+
     def upos(self):
         return self._upos
 
@@ -40,6 +43,9 @@ class Word:
     def set_feats(self, feature_list):
         self._feats = feature_list
 
+    def set_head(self, head):
+        self._head = head
+
     def to_column(self, x):
         if len(x) > 0:
             return "|".join(x)
@@ -52,8 +58,8 @@ class Word:
     def convert(self):
         self.convert_deprel()
         self.convert_xpos()
-        self.convert_feats()
         self.convert_upos()
+        self.convert_feats()
         self.convert_punct()
         self.insert_addition()
         if self.deprel() in suffixes:
@@ -65,6 +71,7 @@ class Word:
     def cleanup(self):
         self.cleanup_form()
         self.cleanup_dummies()
+        self.cleanup_xpos()
 
     def convert_deprel(self):
         if self._deprel in deprel_dict:
@@ -76,22 +83,36 @@ class Word:
 
     def convert_feats(self):
         new_features = []
+        extra_feats = []
         for feat in self._feats:
-            if (feat == "VRoot" or feat == "Root_VS"):
-                self._upos = "VERB"
-            if (feat == "NRoot" or feat == "NRootES"):
-                self._upos = "NOUN"
-            if feat == "NRootNUM":
-                self._upos = "NUM"
-            if feat == "PrnDem":
-                new_features.append("PronType=Det")
-                self._upos = "DET"
-            if feat in feats_dict:
-                new_features.append(feats_dict[feat])
-            else:
+            if "." in feat:
                 split_feat = feat.split(".")
                 if len(split_feat) > 1:
-                    new_features.extend(self.dotted_feat(split_feat))
+                    extra_feats.extend(split_feat)
+        if "Incl" in extra_feats:
+            if "+1" in extra_feats:
+                extra_feats.append("Person=1+INCL")
+                extra_feats.remove("+1")
+                extra_feats.remove("Incl")
+        elif "Excl" in extra_feats:
+            if "+1" in extra_feats:
+                extra_feats.append("Person=1+EXCL")
+                extra_feats.remove("+1")
+                extra_feats.remove("Excl")
+        self._feats.extend(extra_feats)
+        for feat in self._feats:
+            if self._upos not in ud_pos_tags:
+                if feat == "VRoot" or feat == "Root_VS":
+                    self._upos = "VERB"
+                if feat == "NRootES" or feat == "NRoot":
+                    self._upos = "NOUN"
+                if feat == "NRootNUM":
+                    self._upos = "NUM"
+                if feat == "PrnDem":
+                    new_features.append("PronType=Det")
+                    self._upos = "DET"
+            if feat in feats_dict:
+                new_features.append(feats_dict[feat])
         self._feats = copy.deepcopy(new_features)
 
     def convert_upos(self):
@@ -140,7 +161,15 @@ class Word:
         for feat in self._feats:
             if "=NONE" not in feat:
                 new_feats.append(feat)
-        return new_feats
+        self._feats = new_feats
+        new_misc = []
+        for misc in self._misc:
+            if "=NONE" not in misc:
+                new_misc.append(misc)
+        self._misc = new_misc
+
+    def cleanup_xpos(self):
+        self._xpos = "_"
 
 
 suffixes = ["s.neg", "s.obj", "s.subj", "s.subj_iobj", "s.poss.subj", "s.poss"]
@@ -157,12 +186,11 @@ deprel_dict = {
     "r.disl": "@dislocated",  # ?
     "src": "@obl:src",
     "loc": "@nmod:loc",  # @obl:loc
-    "subj": "@csubj",  # @usubj
+    # "subj": "@csubj",  # @usubj
     "acmp": "@nmod",  # @obl
     "mod": "@nmod",  # @obl, @advmod
     "s.arg.claus": "s.arg",
     "sntc": "root",
-    "abbrev": "Abbr=Yes",  # feel like should be in feats instead
     "det": "@det",
     "goal": "@goal",
     "hab": "@hab"
@@ -179,60 +207,70 @@ upos_dict = {
     "Root_Num": "NUM",
     "VDeriv": "VERB",
     "NRootNUM": "NUM",
+    "Root_VS": "VERB"
 }
 
 feats_dict = {
+    "abbrev": "Abbr=Yes",  # moved from deprels
     "+Abl": "Case=Abl",
     "+Acc": "Case=Acc",
     "+Add": "Case=Add",
+    "+Aff": "Aspect=Affective",
+    "+Ag": "VerbForm=Vnoun|Deriv=Ag",
+    "Asmp_Emph": "Evident=Assumptive",
     "+Ben": "Case=Ben",
     "+Caus": "Voice=Caus",
+    "+Con_Inst": "Case=Ins",  # wan?
+    "+Con_Intr": "",
     "+Dat": "Case=Dat",
+    "+Def": "Definite=Def",
+    "+Des": "Mood=Desiderative",
     "+Dim": "Deriv=Dim",
+    "+Dir": "Motion=Dir",
+    "+DirE": "Evident=DirE",
+    "+Distr": "Case=Distr",
+    "+DS": "DS",
+    "+Fact": "Evident=Fact",
+    "FLM": "Foreign=Yes",
+    "+Foc": "FOC",
     "+Fut": "Tense=Fut",
     "+Gen": "Case=Gen",
     "+Hab": "Tense=Past|Aspect=Hab",
     "+Imp": "Mood=Imp",
-    "+Instr": "Case=Ins",
+    "+Inch": "Aspect=Inch",
+    "+IndE": "Evident=IndE",
+    "+Inf": "VerbForm=Inf",
     "+Ipst": "Tense=Past|Evident=Sqa",
+    "+Instr": "Case=Ins",
+    "+Lim": "Case=Lim",
     "+Loc": "Case=Loc",
+    "_Neg": "Polarity=Neg",
+    "+Obl": "Mood=Obligative",
+    "Person=1+EXCL": "Person=1+EXCL",
+    "Person=1+INCL": "Person=1+INCL",
     "+Perf": "Aspect=Perf",
+    "+Pl=true": "Number=Plur",
+    "+Pl": "Number=Plur",
+    "Pl": "Number=Plur",
+    "+Poss": "Poss=Yes",
+    "Poss": "Poss=Yes",
     "+Pres": "Tense=Pres",
     "+Prog": "Aspect=Prog",
     "+Pst": "Tense=Past",
-    "+Rflx": "Reflexive=Yes",
-    "+Sg": "Number=Sing",
-    "+Pl=true": "Number=Plur",
-    "+Pl": "Number=Plur",
-    "+Con_Inst": "Case=Ins",  # wan?
     "+Rflx": "Reflex=Yes",
-    "+Poss": "Poss=Yes",
-    "+Inch": "Aspect=Inch",
-    "+Inf": "VerbForm=Inf",
-    "+DirE": "Evident=DirE",
-    "Sg": "Number=Sing",
-    "+3": "Person=3",
-    "FLM": "Foreign=Yes",
-    "+Con_Intr": "",
-    "+Aff": "Aspect=Affective",
-    "+Ag": "VerbForm=Vnoun|Deriv=Ag",
-    "Asmp_Emph": "Evident=Assumptive",
-    "+Def": "Definite=Def",
-    "+Des": "Mood=Desiderative",
-    "+Dir": "Motion=Dir",
-    "+Distr": "Case=Distr",
-    "+1.Pl.Excl": "1+EXCL",
-    "+Foc": "FOC",
-    "+Fact": "Evident=Fact",
-    "+1.Pl.Incl": "1+INCL",
-    "+IndE": "Evident=IndE",
-    "+DS": "DS",
-    "+SS": "SS",
-    "_Neg": "Polarity=Neg",
-    "+Lim": "Case=Lim",
-    "+Obl": "Mood=Obligative",
+    "+Rflx": "Reflexive=Yes",
     "+Rptn": "Deriv=Rptn",
+    "+Sg": "Number=Sing",
+    "Sg": "Number=Sing",
+    "+SS": "SS",
     "+Term": "Case=Term",
+    "+Top": "TOP",
     "+Vdim": "Degree=Dim",
-    "+Top": "TOP"
+    "+1.Pl.Excl": "1+EXCL",
+    "+1.Pl.Incl": "1+INCL",
+    "+3": "Person=3",
+    "+1": "Person=1"
 }
+
+ud_pos_tags = ["ADJ", "ADV", "INTJ", "NOUN", "PROPN", "VERB", "ADP", "AUX",
+               "CCONJ", "DET", "NUM", "PART", "PRON", "SCONJ", "PUNCT", "SYM", "X"]
