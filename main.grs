@@ -78,11 +78,13 @@ package concatenate{
     pattern {
       Root [xpos=Root];
       C [upos=Cas];
-      Root -[s.co|s.arg]-> C;
+      e: Root -[s.co|s.arg]-> C;
       Root << C;
     }
     commands{
       C.upos = ADP;
+      del_edge e;
+      add_edge Root -[case]-> C;
     }
   }
 
@@ -226,23 +228,30 @@ package rewrite{
     }
   }
 
-  rule advcl_punct{
+  rule punct1{
     pattern{
-      V [upos=VERB];
-      Punct [upos=PUNCT];
-      Other [upos=VERB];
-      Punct < V;
-      Punct < Other;
-      V -[advcl]-> Other;
+      P1 [upos=PUNCT];
+      P2 [upos=PUNCT];
+      Other [];
+      Other2 [];
+      P1 < Other;
+      Other << P2;
+      P2 < Other2;
+      Any [];
+      Any -[punct]-> P1;
+      Any -[punct]-> P2;
     }
     commands{
-      add_edge Other -[punct]-> Punct;
+    del_edge Any -[punct]-> P1;
+    del_edge Any -[punct]-> P2;
+    add_edge Other -[punct]-> P1;
+    add_edge Other -[punct]-> P2;
     }
   }
 }
 
 strat merge_onf {Seq ( Onf(concatenate.vderiv),Onf(concatenate.mergens_vf), Onf(concatenate.mergens_as), Onf(concatenate.asp_amb),Onf(concatenate.suffix), Onf(concatenate.case), Onf(concatenate.case_cleanup), Onf(concatenate.amb))}
 
-strat rewrite_onf {Seq (Onf(rewrite.nsubj), Onf(rewrite.csubj), Onf(rewrite.tmp), Onf(rewrite.pred), Onf(rewrite.det), Onf(rewrite.nummod), Onf(rewrite.advcl), Onf(rewrite.obl), Onf(rewrite.obl2))}
+strat rewrite_onf {Seq (Onf(rewrite.nsubj), Onf(rewrite.csubj), Onf(rewrite.tmp), Onf(rewrite.pred), Onf(rewrite.det), Onf(rewrite.nummod), Onf(rewrite.advcl), Onf(rewrite.obl), Onf(rewrite.obl2), Onf(rewrite.punct1))}
 
 strat main {Seq (merge_onf, rewrite_onf)}

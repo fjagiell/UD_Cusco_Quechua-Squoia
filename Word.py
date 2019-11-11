@@ -258,7 +258,6 @@ feats_dict = {
     "+Prog": "Aspect=Prog",
     "+Pst": "Tense=Past",
     "+Rflx": "Reflex=Yes",
-    "+Rflx": "Reflexive=Yes",
     "+Rptn": "Deriv=Rptn",
     "+Sg": "Number=Sing",
     "Sg": "Number=Sing",
