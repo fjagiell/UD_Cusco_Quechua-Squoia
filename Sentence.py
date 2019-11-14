@@ -46,5 +46,4 @@ class Sentence:
         full_sentence = ["# text = "]
         for word in self._words:
             full_sentence.append(word.form())
-        print(full_sentence)
         return " ".join(full_sentence)

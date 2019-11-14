@@ -45,7 +45,7 @@ def clean_it(f, write_to_file):
 def finish_sentence(sentence, f):
     sentence.cleanup_punct()
     if f == "":
-        print(sentence)
+        pass
     else:
         conversion.write_line([sentence.id()], f)
         conversion.write_line([sentence.seg()], f)
