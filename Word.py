@@ -271,10 +271,9 @@ feats_dict = {
     "+Rptn": "Deriv=Rptn",
     "+Sg": "Number=Sing",
     "Sg": "Number=Sing",
-<<<<<<< HEAD
     "+3": "Person=3",
     "FLM": "Foreign=Yes",
-    "+Con_Intr": "", #blank on purpose
+    "+Con_Intr": "",  # blank on purpose
     "+Aff": "Mood=Affective",
     "+Ag": "VerbForm=Vnoun|Deriv=Ag",
     "Asmp_Emph": "Evident=Assumptive",
@@ -287,8 +286,8 @@ feats_dict = {
     "+Fact": "Evident=Fact",
     "+1.Pl.Incl": "1+INCL",
     "+IndE": "Evident=IndE",
-    "+DS": "", #advcl:ds
-    "+SS": "", #advcl:ss
+    "+DS": "",  # advcl:ds
+    "+SS": "",  # advcl:ss
     "_Neg": "Polarity=Neg",
     "+Lim": "Case=Lim",
     "+Obl": "Mood=Obligative",
