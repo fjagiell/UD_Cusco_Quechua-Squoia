@@ -271,12 +271,31 @@ feats_dict = {
     "+Rptn": "Deriv=Rptn",
     "+Sg": "Number=Sing",
     "Sg": "Number=Sing",
-    "+SS": "SS",
-    "+Term": "Case=Term",
-    "+Top": "TOP",
-    "+Vdim": "Degree=Dim",
+<<<<<<< HEAD
+    "+3": "Person=3",
+    "FLM": "Foreign=Yes",
+    "+Con_Intr": "", #blank on purpose
+    "+Aff": "Mood=Affective",
+    "+Ag": "VerbForm=Vnoun|Deriv=Ag",
+    "Asmp_Emph": "Evident=Assumptive",
+    "+Def": "Definite=Def",
+    "+Des": "Mood=Desiderative",
+    "+Dir": "Motion=Dir",
+    "+Distr": "Case=Distr",
     "+1.Pl.Excl": "1+EXCL",
+    "+Foc": "Focus=Yes",
+    "+Fact": "Evident=Fact",
     "+1.Pl.Incl": "1+INCL",
+    "+IndE": "Evident=IndE",
+    "+DS": "", #advcl:ds
+    "+SS": "", #advcl:ss
+    "_Neg": "Polarity=Neg",
+    "+Lim": "Case=Lim",
+    "+Obl": "Mood=Obligative",
+    "+Rptn": "Deriv=Rptn",
+    "+Term": "Case=Term",
+    "+Vdim": "Degree=Dim"
+    "+Top": "Topic=Yes"
     "+3": "Person=3",
     "+1": "Person=1"
 }
