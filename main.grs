@@ -1,154 +1,257 @@
-rule mergens_vf {
-  pattern {
-    V [upos=VERB|NOUN];
-    NS [upos=NS, VerbForm];
-    V -[ns]-> NS;
+% merging morphemes
+package concatenate{
+  rule mergens_vf {
+    pattern {
+      V [upos=VERB|NOUN];
+      NS [upos=NS, VerbForm];
+      V -[ns]-> NS;
+      V < NS;
+    }
+    commands {
+      V.form = V.form + NS.form;
+      V.VerbForm = NS.VerbForm;
+
+      shift NS ==> V;
+      del_node NS;
+    }
   }
 
-  commands {
-    V.form = V.form + NS.form;
-    V.VerbForm = NS.VerbForm;
-
-    shift NS ==> V;
-    del_node NS;
-  }
-}
-
-rule mergens_as {
-  pattern {
-    V [xpos=Root];
-    NS [upos=NS, Aspect];
-    V -[ns]-> NS;
+  rule mergens_as {
+    pattern {
+      V [xpos=Root];
+      NS [upos=NS, Aspect];
+      V -[ns]-> NS;
+    }
+    commands {
+      V.form = V.form + NS.form;
+      V.Aspect = NS.Aspect;
+      shift NS ==> V;
+      del_node NS;
+    }
   }
 
-  commands {
-    V.form = V.form + NS.form;
-    V.Aspect = NS.Aspect;
+    rule suffix {
+    pattern {
+      Root [xpos=Root];
+      Suffix [xpos=SUFFIX];
+      Root -[s.poss.subj|poss.subj|s.subj|s.poss]-> Suffix;
+      Root < Suffix;
+    }
+    commands{
+      Root.form = Root.form + Suffix.form;
+      shift Suffix ==> Root;
+      del_node Suffix;
+    }
+  }
 
-    shift NS ==> V;
-    del_node NS;
+  rule asp_amb{
+    pattern{
+      Asp [upos=Asp_Amb];
+      V [upos=VERB, xpos=Root];
+      V -[nmod]-> Asp;
+      V < Asp;
+    }
+    commands{
+      V.form = V.form + Asp.form;
+      shift Asp ==> V;
+      del_node Asp;
+    }
   }
-}
-
- 
-rule cas { 
-  pattern {
-    Root [xpos=Root];
-    C [upos=Cas];
-    C -[s.arg|poss.subj]-> Root;
-  }
-  commands{
-    Root.form = Root.form + C.form;
-    Root.Case = C.Case;
-    
-    shift C ==> Root;
-    del_node C;
-  }
-}
-
-rule case_cleanup {
-  pattern {
-    Root [xpos=Root];
-    C [upos=Cas];
-    Root -[s.co|s.arg]-> C;
-  }
-  commands{
-    C.upos = ADP;
-  }
-}
-
-rule amb{
-  pattern{
-    A [upos=Amb];
-    Root [xpos=Root];
-    e: Root -[ev|topic]-> A;
-  }
-  commands{
-    A.upos = PART;
-    del_edge e;
-    add_edge Root -[discourse]-> A;
-  }
-}
-
-rule suffix {
-  pattern { 
-    Root [xpos=Root];
-    Suffix [xpos=SUFFIX];
-    Root -[s.poss.subj|poss.subj|s.subj|s.poss]-> Suffix;
-  }
-  commands{
-    Root.form = Root.form + Suffix.form;
-
-    shift Suffix ==> Root;
-    del_node Suffix;
-  }
-}
-
-rule nsubj{
-  pattern{
-    N [upos=NOUN];
-    Root [upos=VERB];
-    Root -[poss.subj]-> N;
-  }
-  commands{
-    del_edge Root -[poss.subj]-> N;
-    add_edge Root -[nsubj]-> N;
-  }
-}
 
 
-rule csubj{
-  pattern{
-    V [xpos=Root,upos=VERB];
-    Root [upos=VERB];
-    V -[poss.subj]-> Root;
+  rule case {
+    pattern {
+      Root [xpos=Root];
+      C [upos=Cas];
+      C -[s.arg|poss.subj]-> Root;
+      Root < C;
+    }
+    commands{
+      Root.form = Root.form + C.form;
+      Root.Case = C.Case;
+      shift C ==> Root;
+      del_node C;
+    }
   }
-  commands{
-    del_edge V -[poss.subj]-> Root;
-    add_edge V -[csubj]-> Root;
-  }
-}
 
-
-rule vderiv {
-  pattern{
-    Root [xpos=Root];
-    Vderiv [xpos=VDeriv];
-    Root -> Vderiv;
+  rule case_cleanup {
+    pattern {
+      Root [xpos=Root];
+      C [upos=Cas];
+      e: Root -[s.co|s.arg]-> C;
+      Root << C;
+    }
+    commands{
+      C.upos = ADP;
+      del_edge e;
+      add_edge Root -[case]-> C;
+    }
   }
-  commands{
-    Root.form = Root.form + Vderiv.form;
-    shift Vderiv ==> Root;
-    del_node Vderiv;
+
+  rule amb{
+    pattern{
+      Amb [upos=Amb];
+      Root [xpos=Root];
+      e: Root -[ev|topic|taq|epst]-> Amb;
+    }
+    commands{
+      Amb.upos = PART;
+      del_edge e;
+      add_edge Root -[discourse]-> Amb;
+    }
+  }
+
+  rule vderiv {
+    pattern{
+      Root [xpos=Root];
+      Vderiv [xpos=VDeriv];
+      Root -> Vderiv;
+    }
+    commands{
+      Root.form = Root.form + Vderiv.form;
+      shift Vderiv ==> Root;
+      del_node Vderiv;
+    }
   }
 }
 
-rule pred{
-  pattern{
-    Root [upos=VERB];
-    O [upos=VERB];
-    Root -[pred]-> O;
+% edge rewriting
+
+package rewrite{
+  rule nsubj{
+    pattern{
+      N [upos=NOUN];
+      Root [upos=VERB];
+      Root -[poss.subj|subj]-> N;
+    }
+    commands{
+      del_edge Root -[poss.subj]-> N;
+      del_edge Root -[subj]-> N;
+      add_edge Root -[nsubj]-> N;
+    }
   }
-  commands{
-    del_edge Root -[pred]-> O;
-    add_edge Root -[dep]-> O;
+
+  rule csubj{
+    pattern{
+      V [xpos=Root,upos=VERB];
+      Root [upos=VERB];
+      V -[poss.subj]-> Root;
+    }
+    commands{
+      del_edge V -[poss.subj]-> Root;
+      add_edge V -[csubj]-> Root;
+    }
+  }
+
+  rule tmp{
+    pattern{
+      N [upos=NOUN];
+      Other [];
+      Other -[tmp]-> N;
+    }
+    commands{
+      del_edge Other -[tmp]-> N;
+      add_edge Other -[obl]-> N;
+    }
+  }
+
+  rule pred{
+    pattern{
+      Root [upos=VERB];
+      V [upos=VERB];
+      Root -[pred]-> V;
+    }
+    commands{
+      del_edge Root -[pred]-> V;
+      add_edge Root -[dep]-> V;
+    }
+  }
+
+  rule det {
+    pattern{
+      Det [upos=DET];
+      N [upos=NOUN];
+      N -[p.arg]-> Det;
+    }
+    commands{
+      del_edge N -[p.arg]-> Det;
+      add_edge N -[det]-> Det;
+    }
+  }
+
+  rule nummod {
+    pattern{
+      Q [upos=NUM];
+      N [upos = NOUN];
+      N -[qnt]->Q;
+    }
+    commands{
+      del_edge  N -[qnt]-> Q;
+      add_edge N -[nummod]-> Q;
+    }
+  }
+
+  rule advcl{
+    pattern{
+      V [upos=VERB];
+      Root [upos=VERB];
+      Punct [upos=PUNCT];
+      Punct << V;
+      Root -[nmod]-> V;
+    }commands{
+      del_edge Root -[nmod]-> V;
+      add_edge Root -[advcl]-> V;
+    }
+  }
+
+  rule obl{
+    pattern{
+      N [upos=NOUN|VERB|NUM];
+      V [upos=VERB];
+      V -[nmod]-> N;
+    }
+    commands{
+      del_edge V -[nmod]-> N;
+      add_edge V -[obl]-> N;
+    }
+  }
+
+  rule obl2{
+    pattern{
+      N [upos=NOUN];
+      V [upos=VERB];
+      V -[adv]-> N;
+    }
+    commands{
+      del_edge V -[adv]-> N;
+      add_edge V -[obl]-> N;
+    }
+  }
+
+  rule punct1{
+    pattern{
+      P1 [upos=PUNCT];
+      P2 [upos=PUNCT];
+      Other [];
+      Other2 [];
+      P1 < Other;
+      Other << P2;
+      P2 < Other2;
+      Any [];
+      Any -[punct]-> P1;
+      Any -[punct]-> P2;
+    }
+    commands{
+    del_edge Any -[punct]-> P1;
+    del_edge Any -[punct]-> P2;
+    add_edge Other -[punct]-> P1;
+    add_edge Other -[punct]-> P2;
+    }
   }
 }
 
-rule det {
-  pattern{
-    Det [upos=DET];
-    N [upos=NOUN];
-    N -[p.arg]-> Det;
-  }
-  commands{
-    del_edge N -[p.arg]-> Det;
-    add_edge N -[det]-> Det;
-  }
-}
+strat merge_onf {Seq ( Onf(concatenate.vderiv),Onf(concatenate.mergens_vf), Onf(concatenate.mergens_as), Onf(concatenate.asp_amb),Onf(concatenate.suffix), Onf(concatenate.case), Onf(concatenate.case_cleanup), Onf(concatenate.amb))}
 
+strat rewrite_onf {Seq (Onf(rewrite.nsubj), Onf(rewrite.csubj), Onf(rewrite.tmp), Onf(rewrite.pred), Onf(rewrite.det), Onf(rewrite.nummod), Onf(rewrite.advcl), Onf(rewrite.obl), Onf(rewrite.obl2), Onf(rewrite.punct1))}
 
-
-strat main { Seq (Onf(mergens_vf), Onf(mergens_as), Onf(suffix), Onf(cas), Onf(case_cleanup), Onf(vderiv), Onf(amb), Onf(det), Onf(csubj), Onf(nsubj), Onf(pred)) }
-
-
+strat main {Seq (merge_onf, rewrite_onf)}

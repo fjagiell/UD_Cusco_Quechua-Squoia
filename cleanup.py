@@ -5,10 +5,9 @@ import conversion
 from Sentence import Sentence
 import argparse
 
-
-def remove_xpos(line):
-    line[4] = "_"
-    return line
+# TO DO:
+# SpaceAfter=No if there is no space after it
+# alphabetize features
 
 
 def clean_it(f, write_to_file):
@@ -44,12 +43,13 @@ def clean_it(f, write_to_file):
 
 
 def finish_sentence(sentence, f):
+    sentence.cleanup_punct()
     if f == "":
         print(sentence)
     else:
         conversion.write_line([sentence.id()], f)
         conversion.write_line([sentence.seg()], f)
-        conversion.write_line([sentence.converted()], f)
+        conversion.write_line([sentence.sentence_converted()], f)
         for word in sentence.words():
             conversion.write_line(word.to_row(), f)
 
