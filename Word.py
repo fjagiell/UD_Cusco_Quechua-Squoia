@@ -23,10 +23,14 @@ class Word:
             self._misc.append("Feats=" + "|".join(self._feats))
         self._addition = None
         self._suffix = False
+        self._old_form = row[1]
         # self.convert()
 
     def index(self):
         return self._index
+
+    def old_form(self):
+        return self._old_form
 
     def upos(self):
         return self._upos
@@ -70,12 +74,15 @@ class Word:
 
     def cleanup(self):
         self.cleanup_form()
+        self.cleanup_features()
         self.cleanup_dummies()
         self.cleanup_xpos()
 
     def convert_deprel(self):
         if self._deprel in deprel_dict:
             self._deprel = deprel_dict[self._deprel]
+        # if "Gloss=ser" in self._misc:
+        #     self._deprel = "ser"
 
     def convert_xpos(self):
         if self._xpos in xpos_dict:
@@ -156,6 +163,9 @@ class Word:
     def cleanup_form(self):
         self._form = self._form.replace("-", "")
 
+    def cleanup_features(self):
+        self._feats.sort()
+
     def cleanup_dummies(self):
         new_feats = []
         for feat in self._feats:
@@ -190,7 +200,7 @@ deprel_dict = {
     "acmp": "@nmod",  # @obl
     "mod": "@nmod",  # @obl, @advmod
     "s.arg.claus": "s.arg",
-    "sntc": "root",
+    # "sntc": "root",
     "det": "@det",
     "goal": "@goal",
     "hab": "@hab"

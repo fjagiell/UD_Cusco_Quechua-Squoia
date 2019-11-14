@@ -92,7 +92,20 @@ package concatenate{
     pattern{
       Amb [upos=Amb];
       Root [xpos=Root];
-      e: Root -[ev|topic|taq|epst]-> Amb;
+      e: Root -[ev|topic|epst]-> Amb;
+    }
+    commands{
+      Amb.upos = PART;
+      del_edge e;
+      add_edge Root -[discourse]-> Amb;
+    }
+  }
+
+  rule amb_taq{
+    pattern{
+      Amb [upos=Amb, form="-taq"];
+      Root [xpos=Root];
+      e: Root -[s.co]-> Amb;
     }
     commands{
       Amb.upos = PART;
@@ -154,6 +167,32 @@ package rewrite{
       add_edge Other -[obl]-> N;
     }
   }
+
+  rule pred_ser{
+    pattern{
+      Pred [upos=VERB];
+      Ser [upos=VERB];
+      Ser -[pred]-> Pred;
+      R [position=0];
+    }
+    commands{
+      del_edge Ser-[pred]-> Pred;
+      shift Ser ==> Pred;
+      add_edge Pred -[cop]-> Ser;
+    }
+ }
+
+ rule pred_ser_cleanup{
+   pattern{
+     P [upos=VERB];
+     R [position=0];
+     e: R -[sntc]-> P;
+   }
+   commands{
+     del_edge e;
+     add_edge R -[root]-> P;
+   }
+ }
 
   rule pred{
     pattern{
@@ -250,8 +289,8 @@ package rewrite{
   }
 }
 
-strat merge_onf {Seq ( Onf(concatenate.vderiv),Onf(concatenate.mergens_vf), Onf(concatenate.mergens_as), Onf(concatenate.asp_amb),Onf(concatenate.suffix), Onf(concatenate.case), Onf(concatenate.case_cleanup), Onf(concatenate.amb))}
+strat merge_onf {Seq ( Onf(concatenate.vderiv),Onf(concatenate.mergens_vf), Onf(concatenate.mergens_as), Onf(concatenate.asp_amb),Onf(concatenate.suffix), Onf(concatenate.case), Onf(concatenate.case_cleanup), Onf(concatenate.amb), Onf(concatenate.amb_taq))}
 
-strat rewrite_onf {Seq (Onf(rewrite.nsubj), Onf(rewrite.csubj), Onf(rewrite.tmp), Onf(rewrite.pred), Onf(rewrite.det), Onf(rewrite.nummod), Onf(rewrite.advcl), Onf(rewrite.obl), Onf(rewrite.obl2), Onf(rewrite.punct1))}
+strat rewrite_onf {Seq (Onf(rewrite.nsubj), Onf(rewrite.csubj), Onf(rewrite.tmp),Onf(rewrite.pred_ser), Onf(rewrite.pred_ser_cleanup), Onf(rewrite.pred), Onf(rewrite.det), Onf(rewrite.nummod), Onf(rewrite.advcl), Onf(rewrite.obl), Onf(rewrite.obl2), Onf(rewrite.punct1))}
 
 strat main {Seq (merge_onf, rewrite_onf)}

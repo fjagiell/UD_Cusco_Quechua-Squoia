@@ -40,10 +40,11 @@ class Sentence:
         for word in self._words:
             w.extend(word.to_row())
             w.append("\n")
-        return str(self._id) + "\n" + self._text_seg + "\n" + self.sentence_converted() + "\n" + " ".join(w) + "\n"
+        return str(self._id) + "\n" + self._text_seg + "\n" + self.calc_sentence() + "\n" + " ".join(w) + "\n"
 
     def calc_sentence(self):
         full_sentence = ["# text = "]
         for word in self._words:
             full_sentence.append(word.form())
+        print(full_sentence)
         return " ".join(full_sentence)
