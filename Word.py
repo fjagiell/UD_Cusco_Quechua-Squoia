@@ -194,7 +194,7 @@ feats_dict = {
     "+Hab": "Tense=Past|Aspect=Hab",
     "+Imp": "Mood=Imp",
     "+Instr": "Case=Ins",
-    "+Ipst": "Tense=Past|Evident=Sqa",
+    "+Ipst": "Tense=Past|Evident=IndE",
     "+Loc": "Case=Loc",
     "+Perf": "Aspect=Perf",
     "+Pres": "Tense=Pres",
@@ -213,8 +213,8 @@ feats_dict = {
     "Sg": "Number=Sing",
     "+3": "Person=3",
     "FLM": "Foreign=Yes",
-    "+Con_Intr": "",
-    "+Aff": "Aspect=Affective",
+    "+Con_Intr": "", #blank on purpose
+    "+Aff": "Mood=Affective",
     "+Ag": "VerbForm=Vnoun|Deriv=Ag",
     "Asmp_Emph": "Evident=Assumptive",
     "+Def": "Definite=Def",
@@ -222,17 +222,17 @@ feats_dict = {
     "+Dir": "Motion=Dir",
     "+Distr": "Case=Distr",
     "+1.Pl.Excl": "1+EXCL",
-    "+Foc": "FOC",
+    "+Foc": "Focus=Yes",
     "+Fact": "Evident=Fact",
     "+1.Pl.Incl": "1+INCL",
     "+IndE": "Evident=IndE",
-    "+DS": "DS",
-    "+SS": "SS",
+    "+DS": "", #advcl:ds
+    "+SS": "", #advcl:ss
     "_Neg": "Polarity=Neg",
     "+Lim": "Case=Lim",
     "+Obl": "Mood=Obligative",
     "+Rptn": "Deriv=Rptn",
     "+Term": "Case=Term",
     "+Vdim": "Degree=Dim"
-    "+Top": "TOP"
+    "+Top": "Topic=Yes"
 }
