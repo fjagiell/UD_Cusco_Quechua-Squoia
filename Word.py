@@ -294,7 +294,7 @@ feats_dict = {
     "+Rptn": "Deriv=Rptn",
     "+Term": "Case=Term",
     "+Vdim": "Degree=Dim"
-    "+Top": "Topic=Yes"
+    "+Top": "Topic=Yes",
     "+3": "Person=3",
     "+1": "Person=1"
 }
