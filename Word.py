@@ -261,7 +261,6 @@ feats_dict = {
     "+Rptn": "Deriv=Rptn",
     "+Sg": "Number=Sing",
     "Sg": "Number=Sing",
-<<<<<<< HEAD
     "+3": "Person=3",
     "FLM": "Foreign=Yes",
     "+Con_Intr": "", #blank on purpose
