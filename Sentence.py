@@ -30,10 +30,10 @@ class Sentence:
     def sentence_converted(self):
         return self._sentence_converted
 
-    def cleanup_punct(self):
-        self._root = self.find_root()
-        if self._words[-1].upos() == "PUNCT":
-            self._words[-1].set_head(self._root)
+    # def cleanup_punct(self):
+    #     self._root = self.find_root()
+    #     if self._words[-1].upos() == "PUNCT":
+    #         self._words[-1].set_head(self._root)
 
     def __str__(self):
         w = []

@@ -71,18 +71,38 @@ class Word:
         if self._upos == "VERB":
             self.insert_verbform()
             self.insert_aspect()
+        self.convert_misc()
+
+    def convert_misc(self):
+        if len(self._feats) >= 1:
+            self._misc.append("FEATURES=" + "|".join(self._feats) + "")
+        else:
+            self._misc.append("FEATURES")
 
     def cleanup(self):
         self.cleanup_form()
+        self.cleanup_misc()
         self.cleanup_features()
         self.cleanup_dummies()
         self.cleanup_xpos()
 
+    def cleanup_misc(self):
+        for misc in self._misc:
+            if "FEATURES" in misc:
+                misc = misc.replace("[", "")
+                misc = misc.replace("]", "")
+                misc = misc.replace("true", "")
+                misc = misc.replace("FEATURES=", "")
+                if len(misc) > 2:
+                    features = misc.split("|")
+                    self._feats = features
+                break
+
     def convert_deprel(self):
         if self._deprel in deprel_dict:
             self._deprel = deprel_dict[self._deprel]
-        # if "Gloss=ser" in self._misc:
-        #     self._deprel = "ser"
+        if "Gloss=ser" in self._misc:
+            self._deprel = "ser"
 
     def convert_xpos(self):
         if self._xpos in xpos_dict:
@@ -109,7 +129,7 @@ class Word:
         self._feats.extend(extra_feats)
         for feat in self._feats:
             if self._upos not in ud_pos_tags:
-                if feat == "VRoot" or feat == "Root_VS":
+                if feat == "VRoot" or feat == "Root_VS" or feat == "VRootES":
                     self._upos = "VERB"
                 if feat == "NRootES" or feat == "NRoot":
                     self._upos = "NOUN"
@@ -127,20 +147,20 @@ class Word:
             self._upos = upos_dict[self._upos]
 
     def convert_punct(self):
-        if self._deprel == "@punct":
+        if self._deprel == "punct":
             self._upos = "PUNCT"
 
     def insert_verbform(self):
         for item in self._feats:
             if "VerbForm" in item:
                 return
-        self._feats.append("VerbForm=NONE")
+        # self._feats.append("VerbForm=NONE")
 
     def insert_aspect(self):
         for item in self._feats:
             if "Aspect" in item:
                 return
-        self._feats.append("Aspect=NONE")
+        # self._feats.append("Aspect=NONE")
 
     def dotted_feat(self, split_feat):
         more_feats = []
@@ -164,7 +184,8 @@ class Word:
         self._form = self._form.replace("-", "")
 
     def cleanup_features(self):
-        self._feats.sort()
+        if self._feats:
+            self._feats.sort()
 
     def cleanup_dummies(self):
         new_feats = []
@@ -185,25 +206,26 @@ class Word:
 suffixes = ["s.neg", "s.obj", "s.subj", "s.subj_iobj", "s.poss.subj", "s.poss"]
 
 deprel_dict = {
-    "arg": "@obl:arg",
-    "aux": "@aux",
-    "ben": "@obl:ben",
-    "caus": "@obl:caus",
-    "co": "@conj",
-    "iobj": "@iobj",
+    "arg": "obl:arg",
+    "aux": "aux",
+    "ben": "obl:ben",
+    "caus": "obl:caus",
+    "co": "conj",
+    "iobj": "iobj",
     # "adv": "@advmod",
-    "punc": "@punct",
-    "r.disl": "@dislocated",  # ?
-    "src": "@obl:src",
-    "loc": "@nmod:loc",  # @obl:loc
+    "punc": "punct",
+    "r.disl": "dislocated",  # ?
+    "src": "obl:src",
+    "loc": "nmod:loc",  # @obl:loc
     # "subj": "@csubj",  # @usubj
-    "acmp": "@nmod",  # @obl
-    "mod": "@nmod",  # @obl, @advmod
+    "acmp": "nmod",  # @obl
+    "mod": "nmod",  # @obl, @advmod
     "s.arg.claus": "s.arg",
     # "sntc": "root",
-    "det": "@det",
-    "goal": "@goal",
-    "hab": "@hab"
+    "det": "det",
+    "goal": "goal",
+    "hab": "hab"
+
 }
 
 xpos_dict = {
@@ -217,7 +239,9 @@ upos_dict = {
     "Root_Num": "NUM",
     "VDeriv": "VERB",
     "NRootNUM": "NUM",
-    "Root_VS": "VERB"
+    "Root_VS": "VERB",
+    "VRootES": "VERB",
+    "NRootES": "NOUN"
 }
 
 feats_dict = {

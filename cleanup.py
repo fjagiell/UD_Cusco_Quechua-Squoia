@@ -43,7 +43,7 @@ def clean_it(f, write_to_file):
 
 
 def finish_sentence(sentence, f):
-    sentence.cleanup_punct()
+    # sentence.cleanup_punct()
     if f == "":
         pass
     else:
