@@ -20,7 +20,6 @@ class Word:
             self._feats = []
         else:
             self._feats = row[5].split("|")
-            self._misc.append("Feats=" + "|".join(self._feats))
         self._addition = None
         self._suffix = False
         self._old_form = row[1]
@@ -87,16 +86,26 @@ class Word:
         self.cleanup_xpos()
 
     def cleanup_misc(self):
-        for misc in self._misc:
-            if "FEATURES" in misc:
-                misc = misc.replace("[", "")
-                misc = misc.replace("]", "")
-                misc = misc.replace("true", "")
-                misc = misc.replace("FEATURES=", "")
-                if len(misc) > 2:
-                    features = misc.split("|")
+        new_misc = []
+        misc_items = {}
+        print(self._misc)
+        for item in self._misc:
+            if "FEATURES" in item:
+                item = item.replace("[", "").replace("]", "").replace(
+                    "true", "").replace("FEATURES=", "")
+                if len(item) > 2:
+                    features = item.split("|")
                     self._feats = features
-                break
+            else:
+                left_side = item.split("=")[0]
+                if left_side in misc_items:
+                    misc_items[left_side] = misc_items[left_side] + \
+                        "|" + item.replace(left_side + "=", "")
+                else:
+                    misc_items[left_side] = item.replace(left_side + "=", "")
+        for item in misc_items:
+            new_misc.append(item + "=[" + misc_items[item] + "]")
+        self._misc = new_misc
 
     def convert_deprel(self):
         if self._deprel in deprel_dict:
@@ -109,6 +118,7 @@ class Word:
             self._xpos = xpos_dict[self._xpos]
 
     def convert_feats(self):
+        self._misc.append("Feats=" + "|".join(self._feats))
         new_features = []
         extra_feats = []
         for feat in self._feats:
@@ -194,9 +204,9 @@ class Word:
                 new_feats.append(feat)
         self._feats = new_feats
         new_misc = []
-        for misc in self._misc:
-            if "=NONE" not in misc:
-                new_misc.append(misc)
+        for item in self._misc:
+            if "=NONE" not in item:
+                new_misc.append(item)
         self._misc = new_misc
 
     def cleanup_xpos(self):
