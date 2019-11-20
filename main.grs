@@ -1,30 +1,15 @@
 % merging morphemes
 package concatenate{
-  rule mergens_vf {
-    pattern {
+  rule mergens{
+    pattern{
       V [upos=VERB|NOUN];
-      NS [upos=NS, !DS, !Aspect];
+      NS [upos=NS];
       V -[ns]-> NS;
       V < NS;
     }
-    commands {
+    commands{
       V.form = V.form + NS.form;
       V._MISC_FEATURES = V._MISC_FEATURES + NS._MISC_FEATURES;
-      shift NS ==> V;
-      del_node NS;
-    }
-  }
-
-  rule mergens_as {
-    pattern {
-      V [xpos=Root];
-      NS [upos=NS, Aspect, !DS];
-      V -[ns]-> NS;
-    }
-    commands {
-      V.form = V.form + NS.form;
-        V._MISC_FEATURES = V._MISC_FEATURES + NS._MISC_FEATURES;
-      V.Aspect = NS.Aspect;
       shift NS ==> V;
       del_node NS;
     }
@@ -38,13 +23,11 @@ package concatenate{
     }
     commands{
       Root.form = Root.form + Amb.form;
-        Root._MISC_FEATURES = Root._MISC_FEATURES + Amb._MISC_FEATURES;
-
+      Root._MISC_FEATURES = Root._MISC_FEATURES + Amb._MISC_FEATURES;
       shift Amb ==> Root;
       del_node Amb;
     }
   }
-
 
   rule ds{
     pattern{
@@ -54,15 +37,14 @@ package concatenate{
     }
     commands{
       V.form = V.form + NS.form;
-    V._MISC_FEATURES = V._MISC_FEATURES + NS._MISC_FEATURES;
-
+      V._MISC_FEATURES = V._MISC_FEATURES + NS._MISC_FEATURES;
       shift NS ==> V;
       del_node NS;
     }
   }
 
-  rule suffix {
-    pattern {
+  rule suffix{
+    pattern{
       Root [xpos=Root];
       Suffix [xpos=SUFFIX];
       Root -[s.poss.subj|poss.subj|s.subj|s.poss]-> Suffix;
@@ -70,7 +52,7 @@ package concatenate{
     }
     commands{
       Root.form = Root.form + Suffix.form;
-    Root._MISC_FEATURES = Root._MISC_FEATURES + Suffix._MISC_FEATURES;
+      Root._MISC_FEATURES = Root._MISC_FEATURES + Suffix._MISC_FEATURES;
       shift Suffix ==> Root;
       del_node Suffix;
     }
@@ -85,7 +67,7 @@ package concatenate{
     }
     commands{
       V.form = V.form + Asp.form;
-    V._MISC_FEATURES = V._MISC_FEATURES + Asp._MISC_FEATURES;
+      V._MISC_FEATURES = V._MISC_FEATURES + Asp._MISC_FEATURES;
       shift Asp ==> V;
       del_node Asp;
     }
@@ -98,16 +80,15 @@ package concatenate{
       ND -[s.arg]-> Root;
     }commands{
       ND.form = Root.form + ND.form;
-    ND._MISC_FEATURES = ND._MISC_FEATURES + Root._MISC_FEATURES;
+      ND._MISC_FEATURES = ND._MISC_FEATURES + Root._MISC_FEATURES;
       ND.upos = Root.upos;
       shift Root ==> ND;
       del_node Root;
     }
   }
 
-
-  rule case {
-    pattern {
+  rule case{
+    pattern{
       Root [xpos=Root];
       C [upos=Cas];
       C -[s.arg|poss.subj]-> Root;
@@ -115,15 +96,15 @@ package concatenate{
     }
     commands{
       Root.form = Root.form + C.form;
-            Root._MISC_FEATURES = Root._MISC_FEATURES + C._MISC_FEATURES;
+      Root._MISC_FEATURES = Root._MISC_FEATURES + C._MISC_FEATURES;
       Root.Case = C.Case;
       shift C ==> Root;
       del_node C;
     }
   }
 
-  rule case_cleanup {
-    pattern {
+  rule case_cleanup{
+    pattern{
       Root [xpos=Root];
       C [upos=Cas];
       e: Root -[s.co|s.arg]-> C;
@@ -136,9 +117,7 @@ package concatenate{
     }
   }
 
-
-
-  rule vderiv {
+  rule vderiv{
     pattern{
       Root [xpos=Root];
       Vderiv [xpos=VDeriv];
@@ -146,15 +125,15 @@ package concatenate{
     }
     commands{
       Root.form = Root.form + Vderiv.form;
-    Root._MISC_FEATURES = Root._MISC_FEATURES + Vderiv._MISC_FEATURES;
+      Root._MISC_FEATURES = Root._MISC_FEATURES + Vderiv._MISC_FEATURES;
       shift Vderiv ==> Root;
       del_node Vderiv;
     }
   }
 }
 
-% edge rewriting
 
+% edge rewriting
 package rewrite{
     rule amb{
     pattern{
@@ -223,26 +202,16 @@ package rewrite{
     pattern{
       Pred [upos=VERB];
       Ser [upos=VERB];
-      e: Ser -[pred]-> Pred;
+      Zero [!upos];
+      pred_edge: Ser -[pred]-> Pred;
+      root_edge: Zero -[ser]-> Ser;
     }
     commands{
+      del_edge pred_edge;
       shift Ser ==> Pred;
-      del_edge e;
-      add_edge Ser -[dep]-> Pred;
-    }
-  }
-
-
-  rule test_zero{
-    pattern{
-      P [upos=PUNCT];
-      Zero [position=0];
-      e: Zero -[punct]-> P;
-      O [position=1];
-    }
-    commands{
-      del_edge e;
-      add_edge O -[whatever]-> P;
+      del_edge root_edge;
+      add_edge Zero -[root]-> Pred;
+      add_edge Pred -[cop]-> Ser;
 
     }
   }
@@ -259,7 +228,7 @@ package rewrite{
     }
   }
 
-  rule det {
+  rule det{
     pattern{
       Det [upos=DET];
       N [upos=NOUN];
@@ -271,7 +240,7 @@ package rewrite{
     }
   }
 
-  rule nummod {
+  rule nummod{
     pattern{
       Q [upos=NUM];
       N [upos = NOUN];
@@ -342,11 +311,31 @@ package rewrite{
   }
 }
 
-strat merge_onf {Seq ( Onf(concatenate.vderiv),Onf(concatenate.mergens_vf), Onf(concatenate.mergens_as), Onf(concatenate.amb_nmod),Onf(concatenate.ds), Onf(concatenate.asp_amb), Onf(concatenate.sarg), Onf(concatenate.suffix), Onf(concatenate.case), Onf(concatenate.case_cleanup))}
+strat concatenate_onf {Seq (  Onf(concatenate.vderiv),
+                        Onf(concatenate.mergens),
+                        Onf(concatenate.amb_nmod),
+                        Onf(concatenate.ds),
+                        Onf(concatenate.asp_amb),
+                        Onf(concatenate.sarg),
+                        Onf(concatenate.suffix),
+                        Onf(concatenate.case),
+                        Onf(concatenate.case_cleanup)
+                    )
+                }
 
-strat rewrite_onf {Seq ( Onf(rewrite.amb), Onf(rewrite.amb_taq), Onf(rewrite.nsubj), Onf(rewrite.csubj), Onf(rewrite.tmp), Onf(rewrite.det), Onf(rewrite.nummod), Onf(rewrite.advcl), Onf(rewrite.obl), Onf(rewrite.obl2), Onf(rewrite.punct1))}
+strat rewrite_onf   { Seq ( Onf(rewrite.amb),
+                            Onf(rewrite.amb_taq),
+                            Onf(rewrite.nsubj),
+                            Onf(rewrite.csubj),
+                            Onf(rewrite.tmp),
+                            Onf(rewrite.ser),
+                            Onf(rewrite.det),
+                            Onf(rewrite.nummod),
+                            Onf(rewrite.advcl),
+                            Onf(rewrite.obl),
+                            Onf(rewrite.obl2),
+                            Onf(rewrite.punct1)
+                        )
+                    }
 
-strat main {Seq (merge_onf, rewrite_onf)}
-
-
-%Onf(rewrite.pred_ser), Onf(rewrite.pred_ser_cleanup), Onf(rewrite.pred),
+strat main {Seq (concatenate_onf, rewrite_onf)}
