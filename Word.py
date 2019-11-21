@@ -290,7 +290,7 @@ feats_dict = {
     "+Inch": "Aspect=Inch",
     "+IndE": "Evident=IndE",
     "+Inf": "VerbForm=Inf",
-    "+Ipst": "Tense=Past|Evident=Sqa",
+    "+IPst": "Tense=Past|Evident=IndE",
     "+Instr": "Case=Ins",
     "+Lim": "Case=Lim",
     "+Loc": "Case=Loc",
@@ -319,8 +319,43 @@ feats_dict = {
     "+1.Pl.Excl": "1+EXCL",
     "+1.Pl.Incl": "1+INCL",
     "+3": "Person=3",
-    "+1": "Person=1"
+    "+2": "Person=2",
+    "+1": "Person=1",
+    "+Ass": "Voice=Assistive",
+    "+Autotrs": "",  # verbalizing suffix, can probably leave blank
+    "+Emph": "PronType=Emp",
+    "+Neg": "Polarity=Neg",
+    "+Rem": "",
+    "+Rgr": "",
+    "+Iprs": "",
+    "+Sim": "",
+    "+Int": "",
+    "+Rep": "",
+    "+Iclsv": "",
+    "+Ill": "",
+    "+Pot": "",
+    "+Kaus": "",
+    "+Rzpr": "",
+    "+Rel": "",
+    "+Disc": "",
+    "+Conec": "",
+    "+Intsoc": "",
+    "+Trs": "",
+    "+Perdur": "",
+    "+Multi": "",
+    "+Reub": "",
+    "+Dist": "",
+    "+MRep": "",
+    "+Abtmp": "",
+    "+MPoss": "",
+    "+Soc": "",
+    "+Intrup": "",
+    "+QTop": "",
+    "+Affir": "",  # Polarity=Pos??
+    "+Char": "",
+    "+Proloc": ""
 }
+
 
 ud_pos_tags = ["ADJ", "ADV", "INTJ", "NOUN", "PROPN", "VERB", "ADP", "AUX",
                "CCONJ", "DET", "NUM", "PART", "PRON", "SCONJ", "PUNCT", "SYM", "X"]
