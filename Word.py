@@ -265,7 +265,6 @@ feats_dict = {
     "+Ben": "Case=Ben",
     "+Caus": "Voice=Caus",
     "+Con_Inst": "Case=Ins",  # wan?
-    "+Con_Intr": "",
     "+Dat": "Case=Dat",
     "+Def": "Definite=Def",
     "+Des": "Mood=Desiderative",
@@ -284,7 +283,7 @@ feats_dict = {
     "+Inch": "Aspect=Inch",
     "+IndE": "Evident=IndE",
     "+Inf": "VerbForm=Inf",
-    "+Ipst": "Tense=Past|Evident=Sqa",
+    "+IPst": "Tense=Past|Evident=IndE",
     "+Instr": "Case=Ins",
     "+Lim": "Case=Lim",
     "+Loc": "Case=Loc",
@@ -314,7 +313,6 @@ feats_dict = {
     "+Def": "Definite=Def",
     "+Des": "Mood=Desiderative",
     "+Dir": "Motion=Dir",
-    "+Distr": "Case=Distr",
     "+1.Pl.Excl": "1+EXCL",
     "+Foc": "Focus=Yes",
     "+Fact": "Evident=Fact",
@@ -322,7 +320,6 @@ feats_dict = {
     "+IndE": "Evident=IndE",
     "+DS": "",  # advcl:ds
     "+SS": "",  # advcl:ss
-    "_Neg": "Polarity=Neg",
     "+Lim": "Case=Lim",
     "+Obl": "Mood=Obligative",
     "+Rptn": "Deriv=Rptn",
@@ -330,11 +327,41 @@ feats_dict = {
     "+Vdim": "Degree=Dim",
     "+Top": "Topic=Yes",
     "+3": "Person=3",
+    "+2": "Person=2",
     "+1": "Person=1",
     "+Ass": "Voice=Assistive",
     "+Autotrs": "", #verbalizing suffix, can probably leave blank
     "+Emph": "PronType=Emp",
-    "+Neg": "Polarity=Neg"
+    "+Neg": "Polarity=Neg",
+    "+Rem": "",
+    "+Rgr": "",
+    "+Iprs": "",
+    "+Sim": "",
+    "+Int": "",
+    "+Rep": "",
+    "+Iclsv": "",
+    "+Ill": "",
+    "+Pot": "",
+    "+Kaus": "",
+    "+Rzpr": "",
+    "+Rel": "",
+    "+Disc": "",
+    "+Conec": "",
+    "+Intsoc": "",
+    "+Trs": "",
+    "+Perdur": "",
+    "+Multi": "",
+    "+Reub": "",
+    "+Dist": "",
+    "+MRep": "",
+    "+Abtmp": "",
+    "+MPoss": "",
+    "+Soc": "",
+    "+Intrup": "",
+    "+QTop": "",
+    "+Affir": "", #Polarity=Pos??
+    "+Char": "",
+    "+Proloc": ""
 }
 
 
