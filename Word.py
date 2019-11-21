@@ -287,8 +287,6 @@ feats_dict = {
     "+Top": "Topic=Yes",
     "+3": "Person=3",
     "+1": "Person=1",
-    "+Ass": "",
-    "+Autotrs": "", #verbalizing suffix, probably not needed as feature
 }
 
 

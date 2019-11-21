@@ -30,17 +30,17 @@ class Sentence:
     def sentence_converted(self):
         return self._sentence_converted
 
-    def cleanup_punct(self):
-        self._root = self.find_root()
-        if self._words[-1].upos() == "PUNCT":
-            self._words[-1].set_head(self._root)
+    # def cleanup_punct(self):
+    #     self._root = self.find_root()
+    #     if self._words[-1].upos() == "PUNCT":
+    #         self._words[-1].set_head(self._root)
 
     def __str__(self):
         w = []
         for word in self._words:
             w.extend(word.to_row())
             w.append("\n")
-        return str(self._id) + "\n" + self._text_seg + "\n" + self.sentence_converted() + "\n" + " ".join(w) + "\n"
+        return str(self._id) + "\n" + self._text_seg + "\n" + self.calc_sentence() + "\n" + " ".join(w) + "\n"
 
     def calc_sentence(self):
         full_sentence = ["# text = "]
