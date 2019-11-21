@@ -331,6 +331,10 @@ feats_dict = {
     "+Top": "Topic=Yes",
     "+3": "Person=3",
     "+1": "Person=1",
+    "+Ass": "Voice=Assistive",
+    "+Autotrs": "", #verbalizing suffix, can probably leave blank
+    "+Emph": "PronType=Emp",
+    "+Neg": "Polarity=Neg"
 }
 
 
