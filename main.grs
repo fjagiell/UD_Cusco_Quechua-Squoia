@@ -6,7 +6,6 @@ package concatenate{
       NS [upos=NS];
       V -[ns]-> NS;
       O[];
-      V -[!advcl:ds]-> O;
       V < NS;
     }
     commands{
@@ -21,9 +20,14 @@ package concatenate{
     pattern{
       V [upos=VERB];
       NS [upos=NS];
-      V -[advcl:ds]-> NS;
+      adv: V -[1=advcl,2=ds|ss]-> NS;
       V < NS;
-    }commands{
+      O [];
+      e: O -> V;
+    }
+    commands{
+      del_edge e;
+      add_edge adv: O -> V;
       V.form = V.form + NS.form;
       V._MISC_FEATURES = V._MISC_FEATURES + NS._MISC_FEATURES;
       shift_out NS ==> V;
@@ -203,6 +207,19 @@ package rewrite{
     }
   }
 
+  rule csubj_advcl{
+    pattern{
+      V [upos=VERB];
+      N [upos=NOUN];
+      O[];
+      O -[1=advcl]-> V;
+      V -[nsubj]-> N;
+    }commands{
+      del_edge V -[nsubj]-> N;
+      add_edge V -[csubj]-> N;
+    }
+  }
+
   rule tmp{
     pattern{
       N [upos=NOUN];
@@ -359,6 +376,7 @@ strat rewrite_onf   { Seq ( Onf(rewrite.amb),
                             Onf(rewrite.amb_taq),
                             Onf(rewrite.nsubj),
                             Onf(rewrite.csubj),
+                            Onf(rewrite.csubj_advcl),
                             Onf(rewrite.tmp),
                             Onf(rewrite.ser),
                             Onf(rewrite.det),
