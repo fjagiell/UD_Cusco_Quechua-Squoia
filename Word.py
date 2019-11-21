@@ -283,11 +283,14 @@ feats_dict = {
     "+Obl": "Mood=Obligative",
     "+Rptn": "Deriv=Rptn",
     "+Term": "Case=Term",
-    "+Vdim": "Degree=Dim"
-    "+Top": "Topic=Yes"
+    "+Vdim": "Degree=Dim",
+    "+Top": "Topic=Yes",
     "+3": "Person=3",
-    "+1": "Person=1"
+    "+1": "Person=1",
+    "+Ass": "",
+    "+Autotrs": "", #verbalizing suffix, probably not needed as feature
 }
+
 
 ud_pos_tags = ["ADJ", "ADV", "INTJ", "NOUN", "PROPN", "VERB", "ADP", "AUX",
                "CCONJ", "DET", "NUM", "PART", "PRON", "SCONJ", "PUNCT", "SYM", "X"]
