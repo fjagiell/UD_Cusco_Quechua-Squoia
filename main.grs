@@ -5,12 +5,28 @@ package concatenate{
       V [upos=VERB|NOUN];
       NS [upos=NS];
       V -[ns]-> NS;
+      O[];
+      V -[!advcl:ds]-> O;
       V < NS;
     }
     commands{
       V.form = V.form + NS.form;
       V._MISC_FEATURES = V._MISC_FEATURES + NS._MISC_FEATURES;
       shift NS ==> V;
+      del_node NS;
+    }
+  }
+
+  rule mergens_advcl{
+    pattern{
+      V [upos=VERB];
+      NS [upos=NS];
+      V -[advcl:ds]-> NS;
+      V < NS;
+    }commands{
+      V.form = V.form + NS.form;
+      V._MISC_FEATURES = V._MISC_FEATURES + NS._MISC_FEATURES;
+      shift_out NS ==> V;
       del_node NS;
     }
   }
@@ -26,6 +42,7 @@ package concatenate{
       Root._MISC_FEATURES = Root._MISC_FEATURES + Amb._MISC_FEATURES;
       shift Amb ==> Root;
       del_node Amb;
+      del_edge e;
     }
   }
 
@@ -210,6 +227,7 @@ package rewrite{
       del_edge pred_edge;
       shift Ser ==> Pred;
       del_edge root_edge;
+      Ser.upos = AUX;
       add_edge Zero -[root]-> Pred;
       add_edge Pred -[cop]-> Ser;
 
@@ -309,10 +327,24 @@ package rewrite{
     add_edge Other -[punct]-> P2;
     }
   }
+
+  rule neg{
+    pattern{
+      Neg [upos=NEG];
+      Other [];
+      Other -[neg]-> Neg;
+    }
+    commands{
+      del_edge Other -[neg]-> Neg;
+      add_edge Other -[advmod]-> Neg;
+      Neg.upos = ADV;
+    }
+  }
 }
 
 strat concatenate_onf {Seq (  Onf(concatenate.vderiv),
                         Onf(concatenate.mergens),
+                        Onf(concatenate.mergens_advcl),
                         Onf(concatenate.amb_nmod),
                         Onf(concatenate.ds),
                         Onf(concatenate.asp_amb),
@@ -334,7 +366,8 @@ strat rewrite_onf   { Seq ( Onf(rewrite.amb),
                             Onf(rewrite.advcl),
                             Onf(rewrite.obl),
                             Onf(rewrite.obl2),
-                            Onf(rewrite.punct1)
+                            Onf(rewrite.punct1),
+                            Onf(rewrite.neg)
                         )
                     }
 
