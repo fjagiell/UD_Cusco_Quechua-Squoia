@@ -23,7 +23,6 @@ class Word:
         self._addition = None
         self._suffix = False
         self._old_form = row[1]
-        # self.convert()
 
     def index(self):
         return self._index
@@ -67,14 +66,13 @@ class Word:
         self.insert_addition()
         if self.deprel() in suffixes:
             self._xpos = "SUFFIX"
-        if self._upos == "VERB":
-            self.insert_verbform()
-            self.insert_aspect()
         self.convert_misc()
 
     def convert_misc(self):
-        if len(self._feats) >= 1:
-            self._misc.append("FEATURES=" + "|".join(self._feats) + "")
+        if len(self._feats) > 1:
+            self._misc.append("FEATURES=[" + "&".join(self._feats) + "]")
+        elif len(self._feats) == 1:
+            self._misc.append("FEATURES=[" + self._feats[0] + "]")
         else:
             self._misc.append("FEATURES")
 
@@ -88,14 +86,9 @@ class Word:
     def cleanup_misc(self):
         new_misc = []
         misc_items = {}
-        print(self._misc)
         for item in self._misc:
             if "FEATURES" in item:
-                item = item.replace("[", "").replace("]", "").replace(
-                    "true", "").replace("FEATURES=", "")
-                if len(item) > 2:
-                    features = item.split("|")
-                    self._feats = features
+                self._feats = self.get_FEATURES(item)
             else:
                 left_side = item.split("=")[0]
                 if left_side in misc_items:
@@ -107,11 +100,24 @@ class Word:
             new_misc.append(item + "=[" + misc_items[item] + "]")
         self._misc = new_misc
 
+    def get_FEATURES(self, item):
+        item = item.replace("true", "").replace(
+            "FEATURES=", "").replace("][", "&")
+        cleaned = []
+        if len(item) > 1:
+            features = item.split("&")
+            for feature in features:
+                feature = feature.replace("[", "").replace("]", "")
+                cleaned.append(feature)
+        return cleaned
+
     def convert_deprel(self):
         if self._deprel in deprel_dict:
             self._deprel = deprel_dict[self._deprel]
         if "Gloss=ser" in self._misc:
             self._deprel = "ser"
+        if self._deprel == "neg":
+            self._upos = "NEG"
 
     def convert_xpos(self):
         if self._xpos in xpos_dict:
@@ -141,13 +147,19 @@ class Word:
             if self._upos not in ud_pos_tags:
                 if feat == "VRoot" or feat == "Root_VS" or feat == "VRootES":
                     self._upos = "VERB"
-                if feat == "NRootES" or feat == "NRoot":
+                elif feat == "NRootES" or feat == "NRoot":
                     self._upos = "NOUN"
-                if feat == "NRootNUM":
+                elif feat == "NRootNUM":
                     self._upos = "NUM"
-                if feat == "PrnDem":
+                elif feat == "PrnDem":
                     new_features.append("PronType=Det")
                     self._upos = "DET"
+                elif feat == "+SS" or feat == "SS":
+                    self._deprel = "advcl:ss"
+                elif feat == "+DS" or feat == "DS":
+                    self._deprel = "advcl:ds"
+                elif feat == "Part_Neg":
+                    self._upos = "NEG"
             if feat in feats_dict:
                 new_features.append(feats_dict[feat])
         self._feats = copy.deepcopy(new_features)
@@ -159,18 +171,6 @@ class Word:
     def convert_punct(self):
         if self._deprel == "punct":
             self._upos = "PUNCT"
-
-    def insert_verbform(self):
-        for item in self._feats:
-            if "VerbForm" in item:
-                return
-        # self._feats.append("VerbForm=NONE")
-
-    def insert_aspect(self):
-        for item in self._feats:
-            if "Aspect" in item:
-                return
-        # self._feats.append("Aspect=NONE")
 
     def dotted_feat(self, split_feat):
         more_feats = []
@@ -194,6 +194,12 @@ class Word:
         self._form = self._form.replace("-", "")
 
     def cleanup_features(self):
+        new_feats = []
+        for feat in self._feats:
+            feat = feat.replace("|", "")
+            if len(feat) > 0:
+                new_feats.append(feat)
+        self._feats = new_feats
         if self._feats:
             self._feats.sort()
 
@@ -259,13 +265,13 @@ feats_dict = {
     "+Abl": "Case=Abl",
     "+Acc": "Case=Acc",
     "+Add": "Case=Add",
-    "+Aff": "Aspect=Affective",
+    "+Aff": "Mood=Affective",
     "+Ag": "VerbForm=Vnoun|Deriv=Ag",
     "Asmp_Emph": "Evident=Assumptive",
     "+Ben": "Case=Ben",
     "+Caus": "Voice=Caus",
     "+Con_Inst": "Case=Ins",  # wan?
-    "+Con_Intr": "",
+    "+Con_Intr": "",  # blank on purpose
     "+Dat": "Case=Dat",
     "+Def": "Definite=Def",
     "+Des": "Mood=Desiderative",
@@ -273,10 +279,10 @@ feats_dict = {
     "+Dir": "Motion=Dir",
     "+DirE": "Evident=DirE",
     "+Distr": "Case=Distr",
-    "+DS": "DS",
+    "+DS": "",  # advcl:ds
     "+Fact": "Evident=Fact",
     "FLM": "Foreign=Yes",
-    "+Foc": "FOC",
+    "+Foc": "Focus=Yes",
     "+Fut": "Tense=Fut",
     "+Gen": "Case=Gen",
     "+Hab": "Tense=Past|Aspect=Hab",
@@ -305,30 +311,13 @@ feats_dict = {
     "+Rptn": "Deriv=Rptn",
     "+Sg": "Number=Sing",
     "Sg": "Number=Sing",
-    "+3": "Person=3",
-    "FLM": "Foreign=Yes",
-    "+Con_Intr": "",  # blank on purpose
-    "+Aff": "Mood=Affective",
-    "+Ag": "VerbForm=Vnoun|Deriv=Ag",
-    "Asmp_Emph": "Evident=Assumptive",
-    "+Def": "Definite=Def",
-    "+Des": "Mood=Desiderative",
-    "+Dir": "Motion=Dir",
-    "+Distr": "Case=Distr",
-    "+1.Pl.Excl": "1+EXCL",
-    "+Foc": "Focus=Yes",
-    "+Fact": "Evident=Fact",
-    "+1.Pl.Incl": "1+INCL",
-    "+IndE": "Evident=IndE",
-    "+DS": "",  # advcl:ds
     "+SS": "",  # advcl:ss
-    "_Neg": "Polarity=Neg",
-    "+Lim": "Case=Lim",
-    "+Obl": "Mood=Obligative",
-    "+Rptn": "Deriv=Rptn",
     "+Term": "Case=Term",
-    "+Vdim": "Degree=Dim",
     "+Top": "Topic=Yes",
+    "+Vdim": "Degree=Dim",
+    "+3": "Person=3",
+    "+1.Pl.Excl": "1+EXCL",
+    "+1.Pl.Incl": "1+INCL",
     "+3": "Person=3",
     "+1": "Person=1"
 }
