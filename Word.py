@@ -20,13 +20,16 @@ class Word:
             self._feats = []
         else:
             self._feats = row[5].split("|")
-            self._misc.append("Feats=" + "|".join(self._feats))
         self._addition = None
         self._suffix = False
+        self._old_form = row[1]
         # self.convert()
 
     def index(self):
         return self._index
+
+    def old_form(self):
+        return self._old_form
 
     def upos(self):
         return self._upos
@@ -67,21 +70,55 @@ class Word:
         if self._upos == "VERB":
             self.insert_verbform()
             self.insert_aspect()
+        self.convert_misc()
+
+    def convert_misc(self):
+        if len(self._feats) >= 1:
+            self._misc.append("FEATURES=" + "|".join(self._feats) + "")
+        else:
+            self._misc.append("FEATURES")
 
     def cleanup(self):
         self.cleanup_form()
+        self.cleanup_misc()
+        self.cleanup_features()
         self.cleanup_dummies()
         self.cleanup_xpos()
+
+    def cleanup_misc(self):
+        new_misc = []
+        misc_items = {}
+        print(self._misc)
+        for item in self._misc:
+            if "FEATURES" in item:
+                item = item.replace("[", "").replace("]", "").replace(
+                    "true", "").replace("FEATURES=", "")
+                if len(item) > 2:
+                    features = item.split("|")
+                    self._feats = features
+            else:
+                left_side = item.split("=")[0]
+                if left_side in misc_items:
+                    misc_items[left_side] = misc_items[left_side] + \
+                        "|" + item.replace(left_side + "=", "")
+                else:
+                    misc_items[left_side] = item.replace(left_side + "=", "")
+        for item in misc_items:
+            new_misc.append(item + "=[" + misc_items[item] + "]")
+        self._misc = new_misc
 
     def convert_deprel(self):
         if self._deprel in deprel_dict:
             self._deprel = deprel_dict[self._deprel]
+        if "Gloss=ser" in self._misc:
+            self._deprel = "ser"
 
     def convert_xpos(self):
         if self._xpos in xpos_dict:
             self._xpos = xpos_dict[self._xpos]
 
     def convert_feats(self):
+        self._misc.append("Feats=" + "|".join(self._feats))
         new_features = []
         extra_feats = []
         for feat in self._feats:
@@ -102,7 +139,7 @@ class Word:
         self._feats.extend(extra_feats)
         for feat in self._feats:
             if self._upos not in ud_pos_tags:
-                if feat == "VRoot" or feat == "Root_VS":
+                if feat == "VRoot" or feat == "Root_VS" or feat == "VRootES":
                     self._upos = "VERB"
                 if feat == "NRootES" or feat == "NRoot":
                     self._upos = "NOUN"
@@ -120,20 +157,20 @@ class Word:
             self._upos = upos_dict[self._upos]
 
     def convert_punct(self):
-        if self._deprel == "@punct":
+        if self._deprel == "punct":
             self._upos = "PUNCT"
 
     def insert_verbform(self):
         for item in self._feats:
             if "VerbForm" in item:
                 return
-        self._feats.append("VerbForm=NONE")
+        # self._feats.append("VerbForm=NONE")
 
     def insert_aspect(self):
         for item in self._feats:
             if "Aspect" in item:
                 return
-        self._feats.append("Aspect=NONE")
+        # self._feats.append("Aspect=NONE")
 
     def dotted_feat(self, split_feat):
         more_feats = []
@@ -156,6 +193,10 @@ class Word:
     def cleanup_form(self):
         self._form = self._form.replace("-", "")
 
+    def cleanup_features(self):
+        if self._feats:
+            self._feats.sort()
+
     def cleanup_dummies(self):
         new_feats = []
         for feat in self._feats:
@@ -163,9 +204,9 @@ class Word:
                 new_feats.append(feat)
         self._feats = new_feats
         new_misc = []
-        for misc in self._misc:
-            if "=NONE" not in misc:
-                new_misc.append(misc)
+        for item in self._misc:
+            if "=NONE" not in item:
+                new_misc.append(item)
         self._misc = new_misc
 
     def cleanup_xpos(self):
@@ -175,25 +216,26 @@ class Word:
 suffixes = ["s.neg", "s.obj", "s.subj", "s.subj_iobj", "s.poss.subj", "s.poss"]
 
 deprel_dict = {
-    "arg": "@obl:arg",
-    "aux": "@aux",
-    "ben": "@obl:ben",
-    "caus": "@obl:caus",
-    "co": "@conj",
-    "iobj": "@iobj",
+    "arg": "obl:arg",
+    "aux": "aux",
+    "ben": "obl:ben",
+    "caus": "obl:caus",
+    "co": "conj",
+    "iobj": "iobj",
     # "adv": "@advmod",
-    "punc": "@punct",
-    "r.disl": "@dislocated",  # ?
-    "src": "@obl:src",
-    "loc": "@nmod:loc",  # @obl:loc
+    "punc": "punct",
+    "r.disl": "dislocated",  # ?
+    "src": "obl:src",
+    "loc": "nmod:loc",  # @obl:loc
     # "subj": "@csubj",  # @usubj
-    "acmp": "@nmod",  # @obl
-    "mod": "@nmod",  # @obl, @advmod
+    "acmp": "nmod",  # @obl
+    "mod": "nmod",  # @obl, @advmod
     "s.arg.claus": "s.arg",
-    "sntc": "root",
-    "det": "@det",
-    "goal": "@goal",
-    "hab": "@hab"
+    # "sntc": "root",
+    "det": "det",
+    "goal": "goal",
+    "hab": "hab"
+
 }
 
 xpos_dict = {
@@ -207,7 +249,9 @@ upos_dict = {
     "Root_Num": "NUM",
     "VDeriv": "VERB",
     "NRootNUM": "NUM",
-    "Root_VS": "VERB"
+    "Root_VS": "VERB",
+    "VRootES": "VERB",
+    "NRootES": "NOUN"
 }
 
 feats_dict = {
@@ -263,7 +307,7 @@ feats_dict = {
     "Sg": "Number=Sing",
     "+3": "Person=3",
     "FLM": "Foreign=Yes",
-    "+Con_Intr": "", #blank on purpose
+    "+Con_Intr": "",  # blank on purpose
     "+Aff": "Mood=Affective",
     "+Ag": "VerbForm=Vnoun|Deriv=Ag",
     "Asmp_Emph": "Evident=Assumptive",
@@ -276,8 +320,8 @@ feats_dict = {
     "+Fact": "Evident=Fact",
     "+1.Pl.Incl": "1+INCL",
     "+IndE": "Evident=IndE",
-    "+DS": "", #advcl:ds
-    "+SS": "", #advcl:ss
+    "+DS": "",  # advcl:ds
+    "+SS": "",  # advcl:ss
     "_Neg": "Polarity=Neg",
     "+Lim": "Case=Lim",
     "+Obl": "Mood=Obligative",
