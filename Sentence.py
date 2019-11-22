@@ -5,12 +5,17 @@ class Sentence:
         self._words = []
         self._sentence_converted = self.calc_sentence()
         self._root = "-1"
+        self._contains_quotes = False
 
     def append_word(self, word):
         self._words.append(word)
 
     def set_seg(self, seg):
         self._text_seg = seg.replace("text", "text[seg]")
+
+    def set_text(self, text):
+        text = text.replace("\"", "@quot")
+        self._text_seg = text
 
     def words(self):
         return self._words
@@ -21,6 +26,16 @@ class Sentence:
     def id(self):
         return self._id
 
+    def contains_quotes(self):
+        self.update_contains_quotes()
+        return self._contains_quotes
+
+    def update_contains_quotes(self):
+        if "\"" in self._text_seg:
+            self._contains_quotes = True
+        else:
+            self._contains_quotes = False
+
     def find_root(self):
         for item in self._words:
             if item.deprel() == "root":
@@ -30,10 +45,15 @@ class Sentence:
     def sentence_converted(self):
         return self._sentence_converted
 
-    # def cleanup_punct(self):
-    #     self._root = self.find_root()
-    #     if self._words[-1].upos() == "PUNCT":
-    #         self._words[-1].set_head(self._root)
+    def to_rows(self):
+        rows = []
+        rows.append([str(self._id)])
+        rows.append([self._text_seg])
+        # rows.append([self.calc_sentence()])
+        for word in self._words:
+            rows.append(word.to_row())
+        rows.append([])
+        return rows
 
     def __str__(self):
         w = []
