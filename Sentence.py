@@ -1,20 +1,26 @@
 class Sentence:
     def __init__(self, sent_id):
-        self._text_seg = ""
+        self._text_seg = ''
         self._id = sent_id
         self._words = []
         self._sentence_converted = self.calc_sentence()
-        self._root = "-1"
+        self._root = '-1'
         self._contains_quotes = False
 
     def append_word(self, word):
         self._words.append(word)
 
+    def cleanup(self):
+        self.cleanup_text()
+
+    def cleanup_text(self):
+        self._text_seg = self._text_seg.replace('@quot', '\"')
+
     def set_seg(self, seg):
-        self._text_seg = seg.replace("text", "text[seg]")
+        self._text_seg = seg.replace('text', 'text[seg]')
 
     def set_text(self, text):
-        text = text.replace("\"", "@quot")
+        text = text.replace('\"', '@quot')
         self._text_seg = text
 
     def words(self):
@@ -31,16 +37,16 @@ class Sentence:
         return self._contains_quotes
 
     def update_contains_quotes(self):
-        if "\"" in self._text_seg:
+        if '\'' in self._text_seg:
             self._contains_quotes = True
         else:
             self._contains_quotes = False
 
     def find_root(self):
         for item in self._words:
-            if item.deprel() == "root":
+            if item.deprel() == 'root':
                 return item.index()
-        return "none"
+        return 'none'
 
     def sentence_converted(self):
         return self._sentence_converted
@@ -59,11 +65,11 @@ class Sentence:
         w = []
         for word in self._words:
             w.extend(word.to_row())
-            w.append("\n")
-        return str(self._id) + "\n" + self._text_seg + "\n" + self.calc_sentence() + "\n" + " ".join(w) + "\n"
+            w.append('\n')
+        return str(self._id) + '\n' + self._text_seg + '\n' + self.calc_sentence() + '\n' + ' '.join(w) + '\n'
 
     def calc_sentence(self):
-        full_sentence = ["# text = "]
+        full_sentence = ['# text = ']
         for word in self._words:
             full_sentence.append(word.form())
-        return " ".join(full_sentence)
+        return ' '.join(full_sentence)
