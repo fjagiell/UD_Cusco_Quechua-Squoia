@@ -135,7 +135,7 @@ class Word:
         extra_feats = []
         for feat in self._feats:
             feat = feat.strip()
-            if '.' in feat and feat not in feats_dict and not feat == 'PrnPers+3.Sg':
+            if '.' in feat and feat not in feats_dict and not feat == 'PrnPers+3.Sg' and not feat == 'PrnPers+2.Sg':
                 split_feat = feat.split('.')
                 if len(split_feat) > 1:
                     extra_feats.extend(split_feat)
@@ -168,6 +168,9 @@ class Word:
                     self._upos = 'NEG'
             if feat == 'PrnPers+3.Sg' and self._form.lower() == 'paykuna':
                 new_features.append('Person=3')
+                new_features.append('PronType=Prs')
+            elif feat == 'PrnPers+2.Sg' and self._form.lower() == 'qamkuna':
+                new_features.append('Person=2')
                 new_features.append('PronType=Prs')
             else:
                 if feat in feats_dict:

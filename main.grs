@@ -118,7 +118,6 @@ package concatenate{
     commands{
       Root.form = Root.form + C.form;
       Root._MISC_FEATURES = Root._MISC_FEATURES + C._MISC_FEATURES;
-      Root.Case = C.Case;
       shift C ==> Root;
       del_node C;
     }
