@@ -19,9 +19,14 @@ def run_all(infile):
 
 def main():
     IN_FILE = 'DW.conllu'
-    OUTFILE = 'conversion_out/' + IN_FILE
+    OUTFILE1 = 'conversion_out/' + IN_FILE
+    OUTFILE2 = 'cleanup_out/' + IN_FILE
     try:
-        os.remove(OUTFILE)
+        os.remove(OUTFILE1)
+    except:
+        pass
+    try:
+        os.remove(OUTFILE2)
     except:
         pass
     run_all(IN_FILE)
