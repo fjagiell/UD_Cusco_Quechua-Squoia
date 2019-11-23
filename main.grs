@@ -2,10 +2,9 @@
 package concatenate{
   rule mergens{
     pattern{
-      V [upos=VERB|NOUN];
-      NS [upos=NS];
+      V [];
+      NS [upos=NS|NS_Num|NS_VS];
       V -[ns]-> NS;
-      O[];
       V < NS;
     }
     commands{
@@ -66,7 +65,7 @@ package concatenate{
 
   rule suffix{
     pattern{
-      Root [xpos=Root];
+      Root [xpos=Root|Root_VDeriv_VDeriv];
       Suffix [xpos=SUFFIX];
       Root -[s.poss.subj|poss.subj|s.subj|s.poss]-> Suffix;
       Root < Suffix;
@@ -81,8 +80,8 @@ package concatenate{
 
   rule asp_amb{
     pattern{
-      Asp [upos=Asp_Amb];
-      V [upos=VERB, xpos=Root];
+      Asp [upos=Asp_Amb|Asp];
+      V [upos=VERB|AUX];
       V -[nmod]-> Asp;
       V < Asp;
     }
@@ -110,7 +109,7 @@ package concatenate{
 
   rule case{
     pattern{
-      Root [xpos=Root];
+      Root [xpos=Root|FLM];
       C [upos=Cas];
       C -[s.arg|poss.subj]-> Root;
       Root < C;
@@ -125,10 +124,9 @@ package concatenate{
 
   rule case_cleanup{
     pattern{
-      Root [xpos=Root];
+      Root [];
       C [upos=Cas];
-      e: Root -[s.co|s.arg]-> C;
-      Root << C;
+      e: Root -> C;
     }
     commands{
       C.upos = ADP;
@@ -233,11 +231,11 @@ package rewrite{
 
   rule ser{
     pattern{
-      Pred [upos=VERB];
-      Ser [upos=VERB];
+      Pred [];
+      Ser [upos=VERB|X];
       Zero [!upos];
       pred_edge: Ser -[pred]-> Pred;
-      root_edge: Zero -[ser]-> Ser;
+      root_edge: Zero -[cop]-> Ser;
     }
     commands{
       del_edge pred_edge;
@@ -356,9 +354,78 @@ package rewrite{
       Neg.upos = ADV;
     }
   }
+
+  rule sntc{
+    pattern{
+      Zero [!upos];
+      R [];
+      e:Zero -[sntc]-> R;
+    }
+    commands{
+      del_edge e;
+      add_edge Zero -[root]-> R;
+    }
+  }
+
+  rule subj{
+    pattern{
+      Zero [!upos];
+      R [];
+      Zero -[root]-> R;
+      Subj [upos=NOUN|NUM];
+      e: R -[subj]-> Subj;
+    }
+    commands{
+      del_edge e;
+      add_edge R -[nsubj]-> Subj;
+    }
+  }
+
+  rule cleanup_amb1{
+    pattern{
+      Amb [upos=Amb];
+      O[];
+      e: O -> Amb;
+    }
+    commands{
+      Amb.upos = PART;
+      del_edge e;
+      add_edge O -[discourse]-> Amb;
+    }
+  }
+
+  rule punct{
+    pattern{
+      Zero [!upos];
+      Punct [upos=PUNCT];
+      Root [];
+      Zero -[root]-> Root;
+      e: Zero -[punct]-> Punct;
+    }
+    commands{
+      del_edge e;
+      add_edge Root -[punct]-> Punct;
+    }
+  }
+
+  rule poss_subj{
+    pattern{
+      Zero [!pos];
+      Subj [];
+      V [upos=VERB];
+      O[];
+      Zero -[root]-> O;
+      e: V -[poss.subj]->Subj;
+    }
+    commands{
+      del_edge e;
+      add_edge V -[csubj]->Subj;
+    }
+  }
 }
 
 strat concatenate_onf {Seq (  Onf(concatenate.vderiv),
+                        Onf(concatenate.asp_amb),
                         Onf(concatenate.mergens),
                         Onf(concatenate.mergens_advcl),
                         Onf(concatenate.amb_nmod),
@@ -384,7 +451,11 @@ strat rewrite_onf   { Seq ( Onf(rewrite.amb),
                             Onf(rewrite.obl),
                             Onf(rewrite.obl2),
                             Onf(rewrite.punct1),
-                            Onf(rewrite.neg)
+                            Onf(rewrite.neg),
+                            Onf(rewrite.sntc),
+                            Onf(rewrite.cleanup_amb1),
+                            Onf(rewrite.punct),
+                            Onf(rewrite.poss_subj)
                         )
                     }
 
