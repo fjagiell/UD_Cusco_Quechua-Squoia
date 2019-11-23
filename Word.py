@@ -307,7 +307,7 @@ feats_dict = {
     '+Add': 'Case=Add',
     '+Aff': 'Mood=Affective',
     '+Ag': 'VerbForm=Vnoun|Deriv=Ag',
-    'Asmp_Emph': 'Evident=Assumptive',
+    '+Asmp_Emph': 'Evident=Assumptive',
     '+Ben': 'Case=Ben',
     '+Caus': 'Voice=Caus',
     '+Con_Inst': 'Case=Ins',  # wan?
