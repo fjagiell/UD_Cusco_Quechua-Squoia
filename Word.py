@@ -58,6 +58,7 @@ class Word:
                 self._head, self._deprel, self._deps, self.to_column(self._misc)]
 
     def convert(self):
+        self.convert_form()
         self.convert_deprel()
         self.convert_xpos()
         self.convert_upos()
@@ -67,6 +68,9 @@ class Word:
         if self.deprel() in suffixes:
             self._xpos = 'SUFFIX'
         self.convert_misc()
+
+    def convert_form(self):
+        self._form = self._form.replace('\"', '@quot')
 
     def convert_misc(self):
         if len(self._feats) > 1:
@@ -118,6 +122,8 @@ class Word:
             self._deprel = 'ser'
         if self._deprel == 'neg':
             self._upos = 'NEG'
+        if self._deprel == '_':
+            self._deprel = 'none'
 
     def convert_xpos(self):
         if self._xpos in xpos_dict:
@@ -128,7 +134,8 @@ class Word:
         new_features = []
         extra_feats = []
         for feat in self._feats:
-            if '.' in feat and feat not in feats_dict:
+            feat = feat.strip()
+            if '.' in feat and feat not in feats_dict and not feat == 'PrnPers+3.Sg':
                 split_feat = feat.split('.')
                 if len(split_feat) > 1:
                     extra_feats.extend(split_feat)
@@ -152,7 +159,6 @@ class Word:
                 elif feat == 'NRootNUM':
                     self._upos = 'NUM'
                 elif feat == 'PrnDem':
-                    new_features.append('PronType=Det')
                     self._upos = 'DET'
                 elif feat == '+SS' or feat == 'SS':
                     self._deprel = 'advcl:ss'
@@ -160,8 +166,16 @@ class Word:
                     self._deprel = 'advcl:ds'
                 elif feat == 'Part_Neg':
                     self._upos = 'NEG'
-            if feat in feats_dict:
-                new_features.append(feats_dict[feat])
+            if feat == 'PrnPers+3.Sg' and self._form.lower() == 'paykuna':
+                new_features.append('Person=3')
+                new_features.append('PronType=Prs')
+            else:
+                if feat in feats_dict:
+                    from_dict = feats_dict[feat]
+                    if len(from_dict.split('|')) > 1:
+                        new_features.extend(from_dict.split('|'))
+                    else:
+                        new_features.append(from_dict)
         self._feats = copy.deepcopy(new_features)
 
     def convert_upos(self):
@@ -306,6 +320,9 @@ feats_dict = {
     'Poss': 'Poss=Yes',
     '+Pres': 'Tense=Pres',
     '+Prog': 'Aspect=Prog',
+    'PrnDem': 'PronType=Det',
+    'PrnPers+3.Sg': 'Number=Sing|Person=3|PronType=Prn',
+    'PrnPers+2.Sg': 'Number=Sing|Person=2|PronType=Prn',
     '+Pst': 'Tense=Past',
     '+Rflx': 'Reflex=Yes',
     '+Rptn': 'Deriv=Rptn',
@@ -315,17 +332,19 @@ feats_dict = {
     '+Term': 'Case=Term',
     '+Top': 'Topic=Yes',
     '+Vdim': 'Degree=Dim',
-    '+3': 'Person=3',
     '+1.Pl.Excl': 'Person=1|Inclusive=No',
     '+1.Pl.Incl': 'Person=1|Inclusive=Yes',
     '+3': 'Person=3',
     '+2': 'Person=2',
     '+1': 'Person=1',
+    '+2.Sg.Poss': 'Number[psor]=Sing|Person[psor]=2',
     '+3.Sg.Poss': 'Number[psor]=Sing|Person[psor]=3',
     '+1.Sg.Poss': 'Number[psor]=Sing|Person[psor]=1',
     '+3.Pl.Poss': 'Number[psor]=Plur|Person[psor]=3',
     '+1.Pl.Poss': 'Number[psor]=Plur|Person[psor]=1',
-    '+Ass': 'Voice=Assistive',
+    '+1.Pl.Excl.Poss': 'Person[psor]=1|Inclusive[psor]=No|Number[psor]=Plur',
+    '+1.Pl.Incl.Poss': 'Person[psor]=1|Inclusive[psor]=Yes|Number[psor]=Plur',
+    '+Ass': 'Mood=Assistive',
     '+Autotrs': '',  # verbalizing suffix, can probably leave blank
     '+Emph': 'PronType=Emp',
     '+Neg': 'Polarity=Neg',

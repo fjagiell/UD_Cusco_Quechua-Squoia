@@ -50,7 +50,7 @@ def finish_sentence(sentence, f):
         sentence.cleanup()
         conversion.write_line([sentence.id()], f)
         conversion.write_line([sentence.seg()], f)
-        conversion.write_line([sentence.sentence_converted()], f)
+        conversion.write_line([sentence.build_sentence()], f)
         for word in sentence.words():
             conversion.write_line(word.to_row(), f)
 

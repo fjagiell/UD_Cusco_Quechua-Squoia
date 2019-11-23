@@ -15,11 +15,11 @@ def read_file(infile, outfile):
         current_sentence = None
         for row in csvreader:
             if len(row) >= 1:
-                if '# sent_id ' in row[0]:
+                if 'sent_id' in row[0]:
                     if current_sentence:
                         write_sentence(current_sentence, outfile)
                     current_sentence = Sentence(row[0])
-                elif '# text ' in row[0]:
+                elif 'text' in row[0]:
                     current_sentence.set_text(row[0])
                 elif len(row) >= 8:
                     converted_row = Word(row)
@@ -28,11 +28,10 @@ def read_file(infile, outfile):
 
 
 def write_sentence(sentence, outfile):
-    if not sentence.contains_quotes():
-        to_write = sentence.to_rows()
-        with open(outfile, 'a', newline='', encoding='utf-8') as o:
-            csvwriter = csv.writer(o, delimiter='\t', lineterminator='\n')
-            csvwriter.writerows(to_write)
+    to_write = sentence.to_rows()
+    with open(outfile, 'a', newline='', encoding='utf-8') as o:
+        csvwriter = csv.writer(o, delimiter='\t', lineterminator='\n')
+        csvwriter.writerows(to_write)
 
 
 def write_line(line, outfile):

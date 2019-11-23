@@ -14,7 +14,7 @@ def run_all(infile):
     subprocess.run(['grew', 'transform', '-grs', 'main.grs', '-i',
                     'conversion_out/' + IN_FILE, '-o', 'grew_out/' + IN_FILE])
     subprocess.run(['python', 'cleanup.py', '-all'])
-    # subprocess.run(['column', '-t', 'cleanup_out/' + IN_FILE])
+    subprocess.run(['column', '-t', 'cleanup_out/' + IN_FILE])
 
 
 def main():

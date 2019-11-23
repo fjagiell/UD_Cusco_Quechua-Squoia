@@ -1,10 +1,8 @@
 class Sentence:
     def __init__(self, sent_id):
-        self._text_seg = ''
+        self._text_seg = 'text_seg'
         self._id = sent_id
         self._words = []
-        self._sentence_converted = self.calc_sentence()
-        self._root = '-1'
         self._contains_quotes = False
 
     def append_word(self, word):
@@ -48,14 +46,11 @@ class Sentence:
                 return item.index()
         return 'none'
 
-    def sentence_converted(self):
-        return self._sentence_converted
-
     def to_rows(self):
         rows = []
         rows.append([str(self._id)])
         rows.append([self._text_seg])
-        # rows.append([self.calc_sentence()])
+        rows.append([self.build_sentence()])
         for word in self._words:
             rows.append(word.to_row())
         rows.append([])
@@ -66,9 +61,9 @@ class Sentence:
         for word in self._words:
             w.extend(word.to_row())
             w.append('\n')
-        return str(self._id) + '\n' + self._text_seg + '\n' + self.calc_sentence() + '\n' + ' '.join(w) + '\n'
+        return str(self._id) + '\n' + self._text_seg + '\n' + self.build_sentence() + '\n' + ' '.join(w) + '\n'
 
-    def calc_sentence(self):
+    def build_sentence(self):
         full_sentence = ['# text = ']
         for word in self._words:
             full_sentence.append(word.form())
