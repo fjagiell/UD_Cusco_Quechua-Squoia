@@ -307,7 +307,7 @@ feats_dict = {
     '+Add': 'Case=Add',
     '+Aff': 'Mood=Affective',
     '+Ag': 'VerbForm=Vnoun|Deriv=Ag',
-    '+Asmp_Emph': 'Evident=Assumptive',
+    '+Asmp_Emph': 'Evident=Asmp',
     '+Ben': 'Case=Ben',
     '+Caus': 'Voice=Caus',
     '+Con_Inst': 'Case=Ins',  # wan?
@@ -318,7 +318,7 @@ feats_dict = {
     '+Dim': 'Deriv=Dim',
     '+Dir': 'Motion=Dir',
     '+DirE': 'Evident=DirE',
-    '+Distr': 'Case=Distr',
+    '+Distr': 'Case=Dis',
     '+DS': '',  # advcl:ds
     '+Fact': 'Evident=Fact',
     'FLM': 'Foreign=Yes',
@@ -398,7 +398,7 @@ feats_dict = {
     '+Perdur': 'Aspect=Perdur', #perdurative, actions takes place over long time
     '+Multi': '', #multiplier, multiple objects or subjects involved, action happens multiple times
     '+Reub': '', #reubicative, 
-    '+Dist': 'Case=Distr',
+    '+Dist': 'Case=Dis',
     '+MRep': '', #repetitive
     '+Abtmp': '', #if with pacha make an ADP?
     '+MPoss': 'Poss=Yes', #multipossessor, possessor of multiple things
