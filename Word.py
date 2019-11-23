@@ -380,35 +380,34 @@ feats_dict = {
     '+Autotrs': '',  # verbalizing suffix, can probably leave blank
     '+Emph': 'PronType=Emp',
     '+Neg': 'Polarity=Neg',
-    '+Rem': '',
-    '+Rgr': '',
-    '+Iprs': '',
-    '+Sim': '',
-    '+Int': '',
-    '+Rep': '',
-    '+Iclsv': '',
-    '+Ill': '',
-    '+Pot': '',
-    '+Kaus': '',
+    '+Rem': '', #denotes act of reflection or meditation
+    '+Rgr_Iprs': '', #regresssive (go back) or impersonal marker
+    '+Sim': '', #similarity, like usually postposition so make ADP?
+    '+Int': '', #marks an intentional or careless action
+    '+Rep': '', #repetitive action
+    '+Iclsv': 'Inclusive=Yes',
+    '+Dat_Ill': 'Case=Illative',
+    '+Pot': 'Mood=Potential',
+    '+Kaus': 'Voice=Caus',
     '+Rzpr': 'Tense=Fut|Apesct=Perf|VerbForm=Part',
-    '+Rel': '',
-    '+Disc': '',
-    '+Conec': '',
-    '+Intsoc': '',
-    '+Trs': '',
-    '+Perdur': '',
-    '+Multi': '',
-    '+Reub': '',
-    '+Dist': '',
-    '+MRep': '',
-    '+Abtmp': '',
-    '+MPoss': '',
-    '+Soc': '',
-    '+Intrup': '',
-    '+QTop': '',
-    '+Affir': '',  # Polarity=Pos??
-    '+Char': '',
-    '+Proloc': ''
+    '+Rel': 'PronType=Rel',
+    '+Disc': '', #do not think carryover feature necessary
+    'Part_Conec': '', #do not think this should carry over as feature
+    '+Intsoc': 'Case=Intrative',
+    '+Trs': '', #translocative. how to do this? motion?
+    '+Perdur': 'Aspect=Perdur', #perdurative, actions takes place over long time
+    '+Multi': '', #multiplier, multiple objects or subjects involved, action happens multiple times
+    '+Reub': '', #reubicative, 
+    '+Dist': 'Case=Distr',
+    '+MRep': '', #repetitive
+    '+Abtmp': '', #if with pacha make an ADP?
+    '+MPoss': 'Poss=Yes', #multipossessor, possessor of multiple things
+    '+Soc': '', #social means with but can only be used for people
+    '+Intrup': '', #iterative, indicates a recurring or repeated action
+    '+QTop': 'Topic=Yes', #topic marker in questions
+    'Part_Affir': 'Polarity=Pos',  # Polarity=Pos??
+    '+Char': '', #characterizer guessing just leave blank
+    '+Proloc': 'Case=Prolocative'
 }
 
 
