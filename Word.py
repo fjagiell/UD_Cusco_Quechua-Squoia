@@ -72,6 +72,8 @@ class Word:
 
     def convert_form(self):
         self._form = self._form.replace('\"', '@quot')
+        if self._form == '-':
+            self._form == '@dash'
 
     def convert_misc(self):
         if len(self._feats) > 1:
@@ -90,6 +92,11 @@ class Word:
         self.cleanup_features()
         self.cleanup_dummies()
         self.cleanup_xpos()
+        self.cleanup_deprel()
+
+    def cleanup_deprel(self):
+        if self._upos == 'PUNCT':
+            self._deprel = 'punct'
 
     def cleanup_misc(self):
         new_misc = []
@@ -123,6 +130,8 @@ class Word:
         return cleaned
 
     def convert_deprel(self):
+        if self._upos == 'DET':
+            self._deprel = 'det'
         if 'Gloss=ser' in self._misc or self._form.lower() == "kan":
             self._deprel = 'cop'
             self._upos = 'AUX'
@@ -133,6 +142,12 @@ class Word:
                 self._deprel = 'flat:foreign'
             else:
                 self._deprel = 'flat'
+        elif self._deprel == 'linker' and self._form == 'ima':
+            self._upos = 'ADP'
+        elif self._deprel == 'nme' and self._upos == 'Cas':
+            self._deprel = 'case'
+        elif self._deprel == 'nme':
+            self._deprel = 'flat'
         if self._deprel in deprel_dict:
             self._deprel = deprel_dict[self._deprel]
 
@@ -180,6 +195,8 @@ class Word:
             self._deprel = 'advcl:ss'
         elif feat == '+DS' or feat == 'DS':
             self._deprel = 'advcl:ds'
+        elif feat == 'PrnDem':
+            self._deprel = 'det'
 
     def check_specials(self, feat):
         out = None
@@ -192,8 +209,8 @@ class Word:
     def convert_upos(self):
         if self._upos == 'FLM':
             self._feats.append('Foreign=Yes')
-        elif self._form.lower() == 'hina':
-            self._upos = 'ADP'
+        # elif self._form.lower() == 'hina':
+        #     self._upos = 'ADP'
         if self._upos in upos_dict:
             self._upos = upos_dict[self._upos]
 
@@ -221,6 +238,7 @@ class Word:
 
     def cleanup_form(self):
         self._form = self._form.replace('-', '')
+        self._form = self._form.replace('@dash', '-')
 
     def cleanup_features(self):
         new_feats = []
@@ -255,7 +273,7 @@ deprel_dict = {
     'aux': 'aux',
     'ben': 'obl:ben',
     'caus': 'obl:caus',
-    'co': 'conj',
+    'co': 'cc',
     'iobj': 'iobj',
     # 'adv': '@advmod',
     'punc': 'punct',
@@ -271,10 +289,9 @@ deprel_dict = {
     'goal': 'goal',
     'hab': 'hab',
     'qnt': 'nummod',
-    'nme': 'flat',
     'poss': 'case',
     'flm': 'flat:foreign',
-    'p.arg': 'case',
+    # 'p.arg': 'case',
     '--': 'flat'
 
 }
@@ -297,7 +314,8 @@ upos_dict = {
     'DUMMY': 'X',
     '$.': 'PUNCT',
     'SP': 'X',
-    'NDeriv': 'NOUN'
+    'NDeriv': 'NOUN',
+    'Root_VDeriv_VDeriv': 'VERB'
 }
 
 feats_dict = {
@@ -307,7 +325,7 @@ feats_dict = {
     '+Add': 'Case=Add',
     '+Aff': 'Mood=Affective',
     '+Ag': 'VerbForm=Vnoun|Deriv=Ag',
-    'Asmp_Emph': 'Evident=Assumptive',
+    '+Asmp_Emph': 'Evident=Assumptive',
     '+Ben': 'Case=Ben',
     '+Caus': 'Voice=Caus',
     '+Con_Inst': 'Case=Ins',  # wan?

@@ -4,7 +4,7 @@ package concatenate{
     pattern{
       V [];
       NS [upos=NS|NS_Num|NS_VS];
-      V -[ns]-> NS;
+      V -> NS;
       V < NS;
     }
     commands{
@@ -37,7 +37,7 @@ package concatenate{
   rule amb_nmod{
     pattern{
       Amb [upos=Amb];
-      Root [xpos=Root];
+      Root [xpos=Root|ADP];
       e: Root -[nmod]-> Amb;
     }
     commands{
@@ -232,7 +232,7 @@ package rewrite{
   rule ser{
     pattern{
       Pred [];
-      Ser [upos=VERB|X];
+      Ser [upos=VERB|X|AUX];
       Zero [!upos];
       pred_edge: Ser -[pred]-> Pred;
       root_edge: Zero -[cop]-> Ser;
@@ -411,20 +411,73 @@ package rewrite{
   rule poss_subj{
     pattern{
       Zero [!pos];
-      Subj [];
+      Subj [upos=NOUN];
       V [upos=VERB];
       O[];
       Zero -[root]-> O;
-      e: V -[poss.subj]->Subj;
+      V -[poss.subj]-> Subj;
+    }
+    commands{
+      del_edge  V -[poss.subj]-> Subj;
+      add_edge V -[csubj]-> Subj;
+    }
+  }
+
+  rule nsubj2{
+    pattern{
+      N [upos=NOUN];
+      ADV [upos=VERB|ADV];
+      Zero [!upos];
+      O[];
+      Zero -[root]-> O;
+      O -[advcl]-> ADV;
+      e: ADV -[nsubj]-> N;
     }
     commands{
       del_edge e;
-      add_edge V -[csubj]->Subj;
+      add_edge ADV -[csubj]-> N
+    }
+  }
+
+  rule nummod{
+    pattern{
+      Num [upos=NUM];
+      Noun [upos=NOUN];
+      e: Noun -[nmod|mod|case]-> Num;
+    }
+    commands{
+      del_edge e;
+      add_edge Noun -[nummod]-> Num;
+    }
+  }
+
+  rule icha{
+    pattern{
+      Icha [form=icha|Icha];
+      First [];
+      Second [];
+      e1: Second -[linker]-> Icha;
+    }commands{
+      del_edge e1;
+      add_edge Second -[conj]-> Icha;
+      Icha.upos = CCONJ;
+    }
+  }
+
+  rule root1{
+    pattern{
+      Root [upos=Root];
+      Det [upos=DET];
+      V [upos=VERB|AUX];
+      V -> Root;
+      e: Root -[det]-> Det;
+    }commands{
+      Root.upos = NOUN;
     }
   }
 }
 
-strat concatenate_onf {Seq (  Onf(concatenate.vderiv),
+strat concatenate_onf {Seq ( Onf(concatenate.vderiv),
                         Onf(concatenate.asp_amb),
                         Onf(concatenate.mergens),
                         Onf(concatenate.mergens_advcl),
@@ -434,11 +487,13 @@ strat concatenate_onf {Seq (  Onf(concatenate.vderiv),
                         Onf(concatenate.sarg),
                         Onf(concatenate.suffix),
                         Onf(concatenate.case),
-                        Onf(concatenate.case_cleanup)
+                        Onf(concatenate.case_cleanup),
+                        Onf(concatenate.mergens)
                     )
                 }
 
-strat rewrite_onf   { Seq ( Onf(rewrite.amb),
+strat rewrite_onf   { Seq ( Onf(rewrite.icha),
+                            Onf(rewrite.amb),
                             Onf(rewrite.amb_taq),
                             Onf(rewrite.nsubj),
                             Onf(rewrite.csubj),
@@ -455,7 +510,9 @@ strat rewrite_onf   { Seq ( Onf(rewrite.amb),
                             Onf(rewrite.sntc),
                             Onf(rewrite.cleanup_amb1),
                             Onf(rewrite.punct),
-                            Onf(rewrite.poss_subj)
+                            Onf(rewrite.nsubj2),
+                            Onf(rewrite.poss_subj),
+                            Onf(rewrite.nsubj2)
                         )
                     }
 
