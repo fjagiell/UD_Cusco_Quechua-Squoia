@@ -386,7 +386,7 @@ feats_dict = {
     '+Int': '', #marks an intentional or careless action
     '+Rep': '', #repetitive action
     '+Iclsv': 'Inclusive=Yes',
-    '+Dat_Ill': 'Case=Illative',
+    '+Dat_Ill': 'Case=Ill',
     '+Pot': 'Mood=Potential',
     '+Kaus': 'Voice=Caus',
     '+Rzpr': 'Tense=Fut|Apesct=Perf|VerbForm=Part',
