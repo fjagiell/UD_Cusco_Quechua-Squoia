@@ -325,7 +325,11 @@ feats_dict = {
     '+Add': 'Case=Add',
     '+Aff': 'Mood=Affective',
     '+Ag': 'VerbForm=Vnoun|Deriv=Ag',
+<<<<<<< HEAD
     '+Asmp_Emph': 'Evident=Assumptive',
+=======
+    '+Asmp_Emph': 'Evident=Asmp',
+>>>>>>> 5f2d2b84bfaa75ff4da69797d1bd663ecd6aa724
     '+Ben': 'Case=Ben',
     '+Caus': 'Voice=Caus',
     '+Con_Inst': 'Case=Ins',  # wan?
@@ -336,7 +340,7 @@ feats_dict = {
     '+Dim': 'Deriv=Dim',
     '+Dir': 'Motion=Dir',
     '+DirE': 'Evident=DirE',
-    '+Distr': 'Case=Distr',
+    '+Distr': 'Case=Dis',
     '+DS': '',  # advcl:ds
     '+Fact': 'Evident=Fact',
     'FLM': 'Foreign=Yes',
@@ -366,7 +370,7 @@ feats_dict = {
     'Poss': 'Poss=Yes',
     '+Pres': 'Tense=Pres',
     '+Prog': 'Aspect=Prog',
-    'PrnDem': 'PronType=Det',
+    'PrnDem': 'PronType=Dem',
     'PrnPers+3.Sg': 'Number=Sing|Person=3|PronType=Prn',
     'PrnPers+2.Sg': 'Number=Sing|Person=2|PronType=Prn',
     '+Pst': 'Tense=Past',
@@ -378,8 +382,8 @@ feats_dict = {
     '+Term': 'Case=Term',
     '+Top': 'Topic=Yes',
     '+Vdim': 'Degree=Dim',
-    '+1.Pl.Excl': 'Person=1|Inclusive=No',
-    '+1.Pl.Incl': 'Person=1|Inclusive=Yes',
+    '+1.Pl.Excl': 'Number=Plur|Person=1|Inclusive=No',
+    '+1.Pl.Incl': 'Number=Plur|Person=1|Inclusive=Yes',
     '+3': 'Person=3',
     '+2': 'Person=2',
     '+1': 'Person=1',
@@ -398,35 +402,34 @@ feats_dict = {
     '+Autotrs': '',  # verbalizing suffix, can probably leave blank
     '+Emph': 'PronType=Emp',
     '+Neg': 'Polarity=Neg',
-    '+Rem': '',
-    '+Rgr': '',
-    '+Iprs': '',
-    '+Sim': '',
-    '+Int': '',
-    '+Rep': '',
-    '+Iclsv': '',
-    '+Ill': '',
-    '+Pot': '',
-    '+Kaus': '',
-    '+Rzpr': '',
-    '+Rel': '',
-    '+Disc': '',
-    '+Conec': '',
-    '+Intsoc': '',
-    '+Trs': '',
-    '+Perdur': '',
-    '+Multi': '',
-    '+Reub': '',
-    '+Dist': '',
-    '+MRep': '',
-    '+Abtmp': '',
-    '+MPoss': '',
-    '+Soc': '',
-    '+Intrup': '',
-    '+QTop': '',
-    '+Affir': '',  # Polarity=Pos??
-    '+Char': '',
-    '+Proloc': ''
+    '+Rem': '', #denotes act of reflection or meditation
+    '+Rgr_Iprs': '', #regresssive (go back) or impersonal marker
+    '+Sim': '', #similarity, like usually postposition so make ADP?
+    '+Int': '', #marks an intentional or careless action
+    '+Rep': '', #repetitive action
+    '+Iclsv': 'Inclusive=Yes',
+    '+Dat_Ill': 'Case=Ill',
+    '+Pot': 'Mood=Potential',
+    '+Kaus': 'Voice=Caus',
+    '+Rzpr': 'Tense=Fut|Apesct=Perf|VerbForm=Part',
+    '+Rel': 'PronType=Rel',
+    '+Disc': '', #do not think carryover feature necessary
+    'Part_Conec': '', #do not think this should carry over as feature
+    '+Intsoc': 'Case=Intrative',
+    '+Trs': '', #translocative. how to do this? motion?
+    '+Perdur': 'Aspect=Perdur', #perdurative, actions takes place over long time
+    '+Multi': '', #multiplier, multiple objects or subjects involved, action happens multiple times
+    '+Reub': '', #reubicative, 
+    '+Dist': 'Case=Dis',
+    '+MRep': '', #repetitive
+    '+Abtmp': '', #if with pacha make an ADP?
+    '+MPoss': 'Poss=Yes', #multipossessor, possessor of multiple things
+    '+Soc': '', #social means with but can only be used for people
+    '+Intrup': '', #iterative, indicates a recurring or repeated action
+    '+QTop': 'Topic=Yes', #topic marker in questions
+    'Part_Affir': 'Polarity=Pos',  # Polarity=Pos??
+    '+Char': '', #characterizer guessing just leave blank
+    '+Proloc': 'Case=Prolocative'
 }
 
 
