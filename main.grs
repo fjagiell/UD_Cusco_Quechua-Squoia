@@ -49,20 +49,6 @@ package concatenate{
     }
   }
 
-  rule ds{
-    pattern{
-      NS [upos=NS, DS];
-      V [upos=VERB];
-      e: V -[ns]-> NS;
-    }
-    commands{
-      V.form = V.form + NS.form;
-      V._MISC_FEATURES = V._MISC_FEATURES + NS._MISC_FEATURES;
-      shift NS ==> V;
-      del_node NS;
-    }
-  }
-
   rule suffix{
     pattern{
       Root [xpos=Root|Root_VDeriv_VDeriv];
@@ -210,9 +196,9 @@ package rewrite{
       N [upos=NOUN];
       O[];
       O -[1=advcl]-> V;
-      V -[nsubj]-> N;
+      e: V -[nsubj|subj]-> N;
     }commands{
-      del_edge V -[nsubj]-> N;
+      del_edge e;
       add_edge V -[csubj]-> N;
     }
   }
@@ -482,7 +468,6 @@ strat concatenate_onf {Seq ( Onf(concatenate.vderiv),
                         Onf(concatenate.mergens),
                         Onf(concatenate.mergens_advcl),
                         Onf(concatenate.amb_nmod),
-                        Onf(concatenate.ds),
                         Onf(concatenate.asp_amb),
                         Onf(concatenate.sarg),
                         Onf(concatenate.suffix),
