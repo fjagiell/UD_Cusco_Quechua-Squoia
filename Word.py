@@ -90,7 +90,6 @@ class Word:
         self.cleanup_form()
         self.cleanup_misc()
         self.cleanup_features()
-        self.cleanup_dummies()
         self.cleanup_xpos()
         self.cleanup_deprel()
 
@@ -209,23 +208,12 @@ class Word:
     def convert_upos(self):
         if self._upos == 'FLM':
             self._feats.append('Foreign=Yes')
-        # elif self._form.lower() == 'hina':
-        #     self._upos = 'ADP'
         if self._upos in upos_dict:
             self._upos = upos_dict[self._upos]
 
     def convert_punct(self):
         if self._deprel == 'punct':
             self._upos = 'PUNCT'
-
-    def dotted_feat(self, split_feat):
-        more_feats = []
-        if 'Subj' in split_feat:
-            self._addition = 'subj'
-        for feat in split_feat:
-            if feat in feats_dict:
-                more_feats.append(feats_dict[feat])
-        return more_feats
 
     def insert_addition(self):
         if self._addition:
@@ -249,18 +237,6 @@ class Word:
         self._feats = list(set(new_feats))
         if self._feats:
             self._feats.sort()
-
-    def cleanup_dummies(self):
-        new_feats = []
-        for feat in self._feats:
-            if '=NONE' not in feat:
-                new_feats.append(feat)
-        self._feats = new_feats
-        new_misc = []
-        for item in self._misc:
-            if '=NONE' not in item:
-                new_misc.append(item)
-        self._misc = new_misc
 
     def cleanup_xpos(self):
         self._xpos = '_'
@@ -325,11 +301,7 @@ feats_dict = {
     '+Add': 'Case=Add',
     '+Aff': 'Mood=Affective',
     '+Ag': 'VerbForm=Vnoun|Deriv=Ag',
-<<<<<<< HEAD
     '+Asmp_Emph': 'Evident=Assumptive',
-=======
-    '+Asmp_Emph': 'Evident=Asmp',
->>>>>>> 5f2d2b84bfaa75ff4da69797d1bd663ecd6aa724
     '+Ben': 'Case=Ben',
     '+Caus': 'Voice=Caus',
     '+Con_Inst': 'Case=Ins',  # wan?
@@ -402,33 +374,33 @@ feats_dict = {
     '+Autotrs': '',  # verbalizing suffix, can probably leave blank
     '+Emph': 'PronType=Emp',
     '+Neg': 'Polarity=Neg',
-    '+Rem': '', #denotes act of reflection or meditation
-    '+Rgr_Iprs': '', #regresssive (go back) or impersonal marker
-    '+Sim': '', #similarity, like usually postposition so make ADP?
-    '+Int': '', #marks an intentional or careless action
-    '+Rep': '', #repetitive action
+    '+Rem': '',  # denotes act of reflection or meditation
+    '+Rgr_Iprs': '',  # regresssive (go back) or impersonal marker
+    '+Sim': '',  # similarity, like usually postposition so make ADP?
+    '+Int': '',  # marks an intentional or careless action
+    '+Rep': '',  # repetitive action
     '+Iclsv': 'Inclusive=Yes',
     '+Dat_Ill': 'Case=Ill',
     '+Pot': 'Mood=Potential',
     '+Kaus': 'Voice=Caus',
     '+Rzpr': 'Tense=Fut|Apesct=Perf|VerbForm=Part',
     '+Rel': 'PronType=Rel',
-    '+Disc': '', #do not think carryover feature necessary
-    'Part_Conec': '', #do not think this should carry over as feature
+    '+Disc': '',  # do not think carryover feature necessary
+    'Part_Conec': '',  # do not think this should carry over as feature
     '+Intsoc': 'Case=Intrative',
-    '+Trs': '', #translocative. how to do this? motion?
-    '+Perdur': 'Aspect=Perdur', #perdurative, actions takes place over long time
-    '+Multi': '', #multiplier, multiple objects or subjects involved, action happens multiple times
-    '+Reub': '', #reubicative, 
+    '+Trs': '',  # translocative. how to do this? motion?
+    '+Perdur': 'Aspect=Perdur',  # perdurative, actions takes place over long time
+    '+Multi': '',  # multiplier, multiple objects or subjects involved, action happens multiple times
+    '+Reub': '',  # reubicative,
     '+Dist': 'Case=Dis',
-    '+MRep': '', #repetitive
-    '+Abtmp': '', #if with pacha make an ADP?
-    '+MPoss': 'Poss=Yes', #multipossessor, possessor of multiple things
-    '+Soc': '', #social means with but can only be used for people
-    '+Intrup': '', #iterative, indicates a recurring or repeated action
-    '+QTop': 'Topic=Yes', #topic marker in questions
+    '+MRep': '',  # repetitive
+    '+Abtmp': '',  # if with pacha make an ADP?
+    '+MPoss': 'Poss=Yes',  # multipossessor, possessor of multiple things
+    '+Soc': '',  # social means with but can only be used for people
+    '+Intrup': '',  # iterative, indicates a recurring or repeated action
+    '+QTop': 'Topic=Yes',  # topic marker in questions
     'Part_Affir': 'Polarity=Pos',  # Polarity=Pos??
-    '+Char': '', #characterizer guessing just leave blank
+    '+Char': '',  # characterizer guessing just leave blank
     '+Proloc': 'Case=Prolocative'
 }
 

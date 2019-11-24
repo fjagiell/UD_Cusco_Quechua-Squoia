@@ -82,7 +82,7 @@ package concatenate{
   rule sarg{
     pattern{
       Root [xpos=Root, upos=NOUN];
-      ND [upos=NDeriv];
+      ND [xpos=NDeriv];
       ND -[s.arg]-> Root;
     }commands{
       ND.form = Root.form + ND.form;
