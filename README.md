@@ -14,14 +14,23 @@ The corpus contains two chapters of a biography as well as reports about agricul
 
 From Rios (2015, p. 45-46):
 > two chapters from the biography of Gregorio Condori Mamani
+>
 > annual report 2009 of the Deutsche Welle Academy about *Development and the Mdeia*
+>
 > *La papa y el cambio climatico* - 'potatoes and climate change,' inforesources 2008 (development aid)
+>
 > Festschrift 40th anniversary of the Peruvian-German chamber of commerce and industry
+>
 > *La revolucion ganadera: Una oporunidad para los productores pobres?* - 'The Livestock Revolution: An Opportunity for Poor Farmers?, inforesources 2007
+>
 > Memoria 2009, Peruvian-German chamber of commerce and industry
+>
 > strategy paper of the Swiss Agency for Development and Cooperation on the cooperation with Peru
+>
 > annual report 2008 of a private foundation dedicated to education
+>
 > annual report 2010 of the International Monetary Fund (IMF)
+>
 > anniversary publication of the Austrian Institute for Latin America
 
 
