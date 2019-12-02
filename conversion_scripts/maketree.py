@@ -1,5 +1,12 @@
 import csv
 import argparse
+'''
+takes a conllu file and prints the tex for the dependency tree
+
+example call:
+
+python maketree.py -i conllu/test.conllu
+'''
 
 
 def read_file(infile):
@@ -35,7 +42,6 @@ parser.add_argument("-i", "--input", help="input file")
 
 
 def main():
-    # python maketree.py -i conllu/test.conllu
     args = parser.parse_args()
     INFILE = args.input
     read_file(INFILE)

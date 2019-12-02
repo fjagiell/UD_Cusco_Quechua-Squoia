@@ -8,6 +8,13 @@ from Sentence import Sentence
 
 csv.field_size_limit(sys.maxsize)
 
+'''
+reads input file, converts it using Word object
+
+example:
+python conversion.py -i conllu/test.conllu -o conversion_out/test.conllu
+'''
+
 
 def read_file(infile, outfile):
     with open(infile, newline='') as r:
@@ -47,7 +54,6 @@ parser.add_argument(
 
 
 def main():
-    # python conversion.py -i conllu/test.conllu -o conversion_out/test.conllu
     args = parser.parse_args()
     INFILE = args.input
     if args.output:

@@ -1,5 +1,12 @@
 import copy
 
+'''
+object used in conversion.py ad cleanup.py
+
+self.convert() is used in conversion.py
+self.cleanup() is used in cleanup.py
+
+'''
 
 class Word:
 
@@ -90,53 +97,12 @@ class Word:
         self.cleanup_form()
         self.cleanup_misc()
         self.cleanup_features()
-        self.cleanup_upos()
         self.cleanup_xpos()
         self.cleanup_deprel()
-
-    def cleanup_upos(self):
-        if self._upos not in ud_pos_tags:
-            if self._deprel == 'cc':
-                self._upos == 'CCONJ'
-            elif self._deprel == 'nummod':
-                self._upos = 'NUM'
-            elif self._deprel in ['csubj', 'nsubj', 'nmod', 'obj', 'obl', 'nmod:loc']:
-                self._upos = 'NOUN'
-            elif self._deprel == 'advmod' or 'advcl' in self._deprel:
-                self._upos = 'ADV'
-            elif self._deprel == 'root':
-                self._upos = 'VERB'
-            elif self._deprel == 'det':
-                self._upos = 'DET'
-            elif self._deprel == 'ADJ':
-                self._upos = 'admod'
-            elif self._deprel == 'case':
-                self._upos = 'ADP'
-            elif self._deprel == 'discourse' or self._deprel == 's.arg':
-                self._upos = 'PART'
-            elif self._deprel == 'linker' and self._upos in ['Root', 'CCONJ']:
-                self._deprel == 'conj'
-            elif self._deprel in ['comp', 'ccomp','xcomp']:
-                self._upos = 'conj'
-
-            else:
-                self._upos = 'PART'
 
     def cleanup_deprel(self):
         if self._upos == 'PUNCT':
             self._deprel = 'punct'
-        elif self._deprel not in ud_deprels:
-            if self._deprel in ['subj'] and self._upos in ['NOUN', 'NUM']:
-                self._deprel = 'nsubj'
-            elif self._deprel == 's.arg':
-                self._deprel = 'discourse'
-            elif self._deprel == 'goal':
-                self._deprel = 'obj'
-            elif self._deprel == 'pred' and self._upos in ['Root', 'NUM', 'NOUN']:
-                self._deprel == 'odj'
-            elif self._deprel == 'comp' and self._upos in ['Root']:
-                self._deprel == 'ccomp'
-
 
     def cleanup_misc(self):
         new_misc = []
@@ -153,6 +119,7 @@ class Word:
                     misc_items[left_side] = item.replace(left_side + '=', '')
         for item in misc_items:
             new_misc.append(item + '=[' + misc_items[item] + ']')
+        # self._misc = new_misc
         self._misc = ''
 
     def get_FEATURES(self, item):
@@ -296,7 +263,7 @@ deprel_dict = {
     'r.disl': 'dislocated',  # ?
     'src': 'obl:src',
     'loc': 'nmod:loc',  # @obl:loc
-    # 'subj': '@csubj',  # @nsubj
+    # 'subj': '@csubj',  # @usubj
     'acmp': 'nmod',  # @obl
     'mod': 'nmod',  # @obl, @advmod
     's.arg.claus': 's.arg',
@@ -383,8 +350,8 @@ feats_dict = {
     '+Pres': 'Tense=Pres',
     '+Prog': 'Aspect=Prog',
     'PrnDem': 'PronType=Dem',
-    'PrnPers+3.Sg': 'Number=Sing|Person=3|PronType=Prn',
-    'PrnPers+2.Sg': 'Number=Sing|Person=2|PronType=Prn',
+    'PrnPers+3.Sg': 'Number=Sing|Person=3|PronType=Prs',
+    'PrnPers+2.Sg': 'Number=Sing|Person=2|PronType=Prs',
     '+Pst': 'Tense=Past',
     '+Rflx': 'Reflex=Yes',
     '+Rptn': 'Deriv=Rptn',
@@ -447,9 +414,3 @@ feats_dict = {
 
 ud_pos_tags = ['ADJ', 'ADV', 'INTJ', 'NOUN', 'PROPN', 'VERB', 'ADP', 'AUX',
                'CCONJ', 'DET', 'NUM', 'PART', 'PRON', 'SCONJ', 'PUNCT', 'SYM', 'X']
-
-ud_deprels = ['obl','nummod','nsubj','nmod','nsubj','punct','root','flat:foreign', 'obl:ben',
-                'advcl:ss', 'advcl:ds','obl:src','nmod:loc','obl:caus', 'iobj','csubj','ccomp',
-                'xcomp','advcl','obl','vocative','expl','dislocated','appos','acl','amod','list',
-                'conj', 'cc', 'fixed','flat','orphan','goeswith','reparandum','dep','root','det',
-                'clf','aux','cop','mark','discourse','advmod','advcl','obj','amod']

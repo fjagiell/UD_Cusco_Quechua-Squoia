@@ -1,3 +1,11 @@
+'''
+object used in conversion.py and cleanup.py
+
+self.to_rows() generates a list of lists for conll-x format
+
+'''
+
+
 class Sentence:
     def __init__(self, sent_id):
         self._text_seg = 'text_seg'

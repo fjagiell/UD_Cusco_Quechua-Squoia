@@ -8,6 +8,10 @@ import argparse
 # TO DO:
 # SpaceAfter=No if there is no space after it
 # alphabetize features
+'''
+cleans up all files in grew_out/
+
+'''
 
 
 def clean_it(f, write_to_file):

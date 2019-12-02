@@ -6,6 +6,12 @@ import copy
 import os
 import argparse
 
+'''
+takes an input file, runs it through conversion.py, then grew (using main.grs), then cleanup.py
+
+(currently assumes the input is DW.conllu)
+'''
+
 
 def run_all(infile):
     IN_FILE = infile
