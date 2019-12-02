@@ -5,7 +5,7 @@ package concatenate{
       V [];
       NS [upos=NS|NS_Num|NS_VS];
       V -> NS;
-      V < NS;
+      V < NS; % V must directly preced NS in the sentence
     }
     commands{
       V.form = V.form + NS.form;
@@ -126,6 +126,7 @@ package concatenate{
       Root [xpos=Root];
       Vderiv [xpos=VDeriv];
       Root -> Vderiv;
+      Root < Vderiv;
     }
     commands{
       Root.form = Root.form + Vderiv.form;
@@ -190,16 +191,16 @@ package rewrite{
     }
   }
 
-  rule csubj_advcl{
+  rule nsubj_advcl{
     pattern{
       V [upos=VERB];
       N [upos=NOUN];
       O[];
       O -[1=advcl]-> V;
-      e: V -[nsubj|subj]-> N;
+      e: V -[subj]-> N;
     }commands{
       del_edge e;
-      add_edge V -[csubj]-> N;
+      add_edge V -[nsubj]-> N;
     }
   }
 
@@ -461,6 +462,18 @@ package rewrite{
       Root.upos = NOUN;
     }
   }
+
+  rule hina{
+    pattern{
+      Hina [form='hina'|'Hina'];
+      P [];
+      e: Hina -[p.arg]-> P;
+    }
+    commands{
+      del_edge e;
+      add_edge Hina -[]
+    }
+  }
 }
 
 strat concatenate_onf {Seq ( Onf(concatenate.vderiv),
@@ -482,7 +495,7 @@ strat rewrite_onf   { Seq ( Onf(rewrite.icha),
                             Onf(rewrite.amb_taq),
                             Onf(rewrite.nsubj),
                             Onf(rewrite.csubj),
-                            Onf(rewrite.csubj_advcl),
+                            %Onf(rewrite.csubj_advcl),
                             Onf(rewrite.tmp),
                             Onf(rewrite.ser),
                             Onf(rewrite.det),

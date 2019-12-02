@@ -1,0 +1,24 @@
+# text[eng] = Since then, economic relations between our two countries have continuously improved and developed at various levels.							
+# text[gloss] = From.that time-EVID two regions.our-FOC from.economy, relationing.to.themselves-FOC, very.CERTAIN in.all.ways have.been.going						
+1	Chaymanta	_	DET	_	Case=Abl|PronType=Dem	2	det	_	_
+2-3	pacham	_	_	_	_	_	_	_	_
+2	pacha	_	NOUN	_	_	16	obl	_	Gloss=mundo,tiempo
+3	m	_	PART	_	Evident=DirE	16	discourse	_	_
+4	iskaynin	_	NUM	_	_	5	nummod	_	_
+5-6	suyunchikqa	_	_	_	_	_	_	_	_
+5	suyunchik	_	NOUN	_	Possessive=Yes|Number=Plur|Person[incl]=1	16	nsubj	_	Gloss=región
+6	qa	_	PART	_	_	5	discourse	_	_
+7	economíamanta	_	NOUN	_	Case=Abl	9	obl	_	_
+8	,	_	PUNCT	_	_	9	punct	_	_
+9-10	masichakuyninqa	_	_	_	_	_	_	_	_
+9	masichakuynin	_	VERB	_	Reflex=Yes|Person[subj]=3|Number[subj]=Sing|Possession=Yes	16	advcl	_	Gloss=compañero
+10	qa	_	PART	_	_	9	discourse	_	_
+11	,	_	PUNCT	_	_	9	punct	_	_
+12-13	ancatapuni	_	_	_	_	_	_	_	_
+12	anchata	_	NOUN	_	Case=Acc	16	obl	_	Gloss=muy,mucho
+13	puni	_	PART	_	Definite=yes	16	discourse	_	_
+14-15	imaymanakunapiqa	_	_	_	_	_	_	_	_
+14	imaymanakunapi	_	NUM	_	Number=Plur|Case=Loc	16	obl	_	Gloss=toda_clase_de,todos
+15	qa	_	PART	_	_	14	discourse	_	_
+16	puriykunchkallan	_	VERB	_	Aspect=Prog|Number[subj]=Sing|Person[subj]=3	0	root	_	Gloss=andar
+17	.	_	PUNCT	_	_	16	punct	_	_

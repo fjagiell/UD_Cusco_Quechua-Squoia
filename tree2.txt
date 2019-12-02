@@ -1,0 +1,32 @@
+# sent_id = ahk1968-2008_qu-s6									
+# text = Chay -manta pacha -m iskay -nin suyu -nchik -qa economía -manta , masicha -ku -y -nin -qa , ancha -ta -puni imaymanakuna -pi -qa puriyku -chkalla -n .									
+# text[spa] = Desde aquel entonces , las relaciones económicas entre nuestros dos países han mejorado continuamente y se han desarrollado en diversos niveles .									
+# text[eng] = Since then, economic relations between our two countries have continuously improved and developed at various levels.									
+1	Chay	_	Root	Root	PrnDem	2	s.arg	_	_
+2	-manta	_	Cas	Cas	+Abl	3	p.arg	_	_
+3	pacha	_	Root	Root	NRoot	25	tmp	_	Gloss=mundo,tiempo
+4	-m	_	Amb	Amb	+DirE	25	ev	_	_
+5	iskay	_	Root	Root	NRootNUM	7	qnt	_	_
+6	-nin	_	NPers	NPers	+3.Sg.Poss	5	s.poss	_	_
+7	suyu	_	Root	Root	NRoot	25	subj	_	Gloss=región
+8	-nchik	_	NPers	NPers	+1.Pl.Incl.Poss	7	s.poss	_	_
+9	-qa	_	Amb	Amb	+Top	7	topic	_	_
+10	economía	_	Root	Root	NRootES	11	s.arg	_	_
+11	-manta	_	Cas	Cas	+Abl	13	mod	_	_
+12	,	_	$.	$.	_	0	punc	_	_
+13	masicha	_	Root_VS	Root_VS	NRoot|+Fact	25	mod	_	Gloss=compañero
+14	-ku	_	VDeriv	VDeriv	+Rflx_Int	13	mod	_	_
+15	-y	_	NS	NS	+Inf	13	ns	_	_
+16	-nin	_	NPers	NPers	+3.Sg.Poss	15	s.poss.subj	_	_
+17	-qa	_	Amb	Amb	+Top	13	topic	_	_
+18	,	_	$.	$.	_	0	punc	_	_
+19	ancha	_	Root	Root	NRoot	20	s.arg	_	Gloss=muy,mucho
+20	-ta	_	Cas	Cas	+Acc	25	adv	_	_
+21	-puni	_	Amb	Amb	+Def	25	epst	_	_
+22	imaymanakuna	_	Root_Num	Root_Num	NRoot|+Pl	23	s.arg	_	Gloss=toda_clase_de,todos
+23	-pi	_	Cas	Cas	+Loc	25	mod	_	_
+24	-qa	_	Amb	Amb	+Top	22	topic	_	_
+25	puriyku	_	Root_VDeriv	Root_VDeriv	VRoot|+Aff	0	sntc	_	Gloss=andar
+26	-chkalla	_	Asp_Amb	Asp_Amb	+Prog|+Lim_Aff	25	mod	_	_
+27	-n	_	VPers	VPers		25	s.subj	_	_
+28	.	_	$.	$.	_	0	punc	_	_

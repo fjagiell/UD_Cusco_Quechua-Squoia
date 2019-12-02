@@ -1,0 +1,20 @@
+# sent_id = DW-s120
+# text = Kay plazo pasa -pti -lla -n -mi qullqi -qa mana interés -niyuq hurqu -sqa ka -nman .
+1	Kay	_	Root	Root	PrnDem	2	det	_	_
+2	plazo	_	Root	Root	NRootES	3	subj	_	_
+3	pasa	_	Root	Root	VRootES	15	sub	_	_
+4	-pti	_	NS	NS	+DS	3	ns	_	_
+5	-lla	_	Amb	Amb	+Lim_Aff	3	mod	_	_
+6	-n	_	NPers	NPers	+3.Sg.Poss	4	s.poss.subj	_	_
+7	-mi	_	Amb	Amb	+DirE	15	ev	_	_
+8	qullqi	_	Root	Root	NRoot	15	subj	_	Gloss=plata
+9	-qa	_	Amb	Amb	+Top	8	topic	_	_
+10	mana	_	Root	Root	Part_Neg	11	neg	_	_
+11	interés	_	Root	Root	NRootES	12	s.arg	_	_
+12	-niyuq	_	NDeriv	NDeriv	+Poss	13	mod	_	_
+13	hurqu	_	Root	Root	VRoot	15	pred	_	Gloss=sacar
+14	-sqa	_	NS	NS	+Perf	13	ns	_	_
+15	ka	_	Root	Root	VRoot	0	sntc	_	Gloss=ser
+16	-nman	_	VPers_Mod	VPers_Mod	+3.Sg.Subj|+Pot	15	s.subj	_	_
+17	.	_	$.	$.	_	0	punc	_	_
+
