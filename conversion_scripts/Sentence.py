@@ -20,7 +20,8 @@ class Sentence:
         self.cleanup_text()
 
     def cleanup_text(self):
-        self._text_seg = self._text_seg.replace('@quot', '\"')
+        # self._text_seg = self._text_seg.replace('@quot', '\"')
+        self._text_seg = self._text_seg
 
     def set_seg(self, seg):
         self._text_seg = seg.replace('text', 'text[seg]')

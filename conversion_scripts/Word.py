@@ -8,17 +8,18 @@ self.cleanup() is used in cleanup.py
 
 '''
 
+
 class Word:
 
     def __init__(self, row):
         self._index = row[0]
-        self._form = row[1]
-        self._lemma = row[2]
-        self._upos = row[3]
-        self._xpos = row[4]
-        self._head = row[6]
-        self._deprel = row[7]
-        self._deps = row[8]
+        self._form = row[1].strip()
+        self._lemma = row[2].strip()
+        self._upos = row[3].strip()
+        self._xpos = row[4].strip()
+        self._head = row[6].strip()
+        self._deprel = row[7].strip()
+        self._deps = row[8].strip()
         if '_' in row[9]:
             self._misc = []
         else:
@@ -79,7 +80,7 @@ class Word:
 
     def convert_form(self):
         self._form = self._form.replace('\"', '@quot')
-        if self._form == '-':
+        if self._form == '-' or self._form == '-':
             self._form == '@dash'
 
     def convert_misc(self):
@@ -99,10 +100,17 @@ class Word:
         self.cleanup_features()
         self.cleanup_xpos()
         self.cleanup_deprel()
+        self.cleanup_upos()
+
+    def cleanup_upos(self):
+        if 'nmod' in self._deprel and self._upos == 'Root':
+            self._upos = 'NOUN'
 
     def cleanup_deprel(self):
         if self._upos == 'PUNCT':
             self._deprel = 'punct'
+        elif self._deprel == 'num':
+            self._deprel = 'nummod'
 
     def cleanup_misc(self):
         new_misc = []
@@ -154,6 +162,8 @@ class Word:
             self._deprel = 'case'
         elif self._deprel == 'nme':
             self._deprel = 'flat'
+        elif self._deprel == '_':
+            self._deprel = 'none'
         if self._deprel in deprel_dict:
             self._deprel = deprel_dict[self._deprel]
 
@@ -217,6 +227,8 @@ class Word:
             self._feats.append('Foreign=Yes')
         if self._upos in upos_dict:
             self._upos = upos_dict[self._upos]
+        if self._upos == 'Root' and self._form.lower() == 'pay':
+            self._upos = 'PRON'
 
     def convert_punct(self):
         if self._deprel == 'punct':

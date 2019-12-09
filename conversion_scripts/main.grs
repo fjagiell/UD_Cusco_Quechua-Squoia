@@ -51,9 +51,9 @@ package concatenate{
 
   rule suffix{
     pattern{
-      Root [xpos=Root|Root_VDeriv_VDeriv];
+      Root [];
       Suffix [xpos=SUFFIX];
-      Root -[s.poss.subj|poss.subj|s.subj|s.poss]-> Suffix;
+      Root -> Suffix;
       Root < Suffix;
     }
     commands{
@@ -123,7 +123,7 @@ package concatenate{
 
   rule vderiv{
     pattern{
-      Root [xpos=Root];
+      Root [xpos=Root|Root_NDeriv_VS|Root_VS_VDeriv];
       Vderiv [xpos=VDeriv];
       Root -> Vderiv;
       Root < Vderiv;
@@ -463,17 +463,6 @@ package rewrite{
     }
   }
 
-  rule hina{
-    pattern{
-      Hina [form='hina'|'Hina'];
-      P [];
-      e: Hina -[p.arg]-> P;
-    }
-    commands{
-      del_edge e;
-      add_edge Hina -[]
-    }
-  }
 }
 
 strat concatenate_onf {Seq ( Onf(concatenate.vderiv),
@@ -486,7 +475,8 @@ strat concatenate_onf {Seq ( Onf(concatenate.vderiv),
                         Onf(concatenate.suffix),
                         Onf(concatenate.case),
                         Onf(concatenate.case_cleanup),
-                        Onf(concatenate.mergens)
+                        Onf(concatenate.mergens),
+                        Onf(concatenate.suffix)
                     )
                 }
 
@@ -507,10 +497,10 @@ strat rewrite_onf   { Seq ( Onf(rewrite.icha),
                             Onf(rewrite.neg),
                             Onf(rewrite.sntc),
                             Onf(rewrite.cleanup_amb1),
-                            Onf(rewrite.punct),
                             Onf(rewrite.nsubj2),
                             Onf(rewrite.poss_subj),
-                            Onf(rewrite.nsubj2)
+                            Onf(rewrite.nsubj2),
+                             Onf(rewrite.punct)
                         )
                     }
 

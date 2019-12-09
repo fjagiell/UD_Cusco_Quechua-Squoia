@@ -9,7 +9,7 @@ import argparse
 '''
 takes an input file, runs it through conversion.py, then grew (using main.grs), then cleanup.py
 
-(currently assumes the input is DW.conllu)
+(currently assumes the input is squoia_qu.conllu)
 '''
 
 
@@ -24,7 +24,7 @@ def run_all(infile):
 
 
 def main():
-    IN_FILE = 'DW.conllu'
+    IN_FILE = 'squoia_qu.conllu'
     OUTFILE1 = 'conversion_out/' + IN_FILE
     OUTFILE2 = 'cleanup_out/' + IN_FILE
     try:
