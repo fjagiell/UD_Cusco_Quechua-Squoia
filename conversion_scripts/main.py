@@ -15,11 +15,11 @@ takes an input file, runs it through conversion.py, then grew (using main.grs), 
 
 def run_all(infile):
     IN_FILE = infile
-    subprocess.run(['python', 'conversion.py', '-i', 'conllu/'+IN_FILE,
+    subprocess.run(['python3', 'conversion.py', '-i', 'conllu/'+IN_FILE,
                     '-o', 'conversion_out/' + IN_FILE])
     subprocess.run(['grew', 'transform', '-grs', 'main.grs', '-i',
                     'conversion_out/' + IN_FILE, '-o', 'grew_out/' + IN_FILE])
-    subprocess.run(['python', 'cleanup.py', '-all'])
+    subprocess.run(['python3', 'cleanup.py', '-all'])
     # subprocess.run(['column', '-t', 'cleanup_out/' + IN_FILE])
 
 
