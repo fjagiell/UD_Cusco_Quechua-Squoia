@@ -450,7 +450,7 @@
 4	suyuykupi	_	NOUN	_	Case=Loc|Inclusive[psor]=No|Number[psor]=Plur|Person[psor]=1	10	nmod:loc	_	_
 5	kunan	_	NOUN	_	_	6	nmod	_	_
 6	pacha	_	NOUN	_	_	8	obl	_	_
-7	maypi	_	Root	_	Case=Loc	8	nmod:loc	_	_
+7	maypi	_	NOUN	_	Case=Loc	8	nmod:loc	_	_
 8	kasqaykukuna	_	AUX	_	Aspect=Perf|Inclusive[psor]=No|Number=Plur|Number[psor]=Plur|Person[psor]=1	9	cop	_	_
 9	man	_	ADP	_	_	10	case	_	_
 10	churawanku	_	VERB	_	_	0	root	_	_
@@ -2707,7 +2707,7 @@
 14	,	_	PUNCT	_	_	4	punct	_	_
 15	kaqlla	_	AUX	_	Deriv=Ag|VerbForm=Vnoun	22	cop	_	_
 16	taq	_	PART	_	_	15	discourse	_	_
-17	may	_	Root	_	_	19	nmod:loc	_	_
+17	may	_	NOUN	_	_	19	nmod:loc	_	_
 18	impuestokuna	_	NUM	_	Number=Plur	19	subj	_	_
 19	kasqan	_	AUX	_	Aspect=Perf|Number[psor]=Sing|Person[psor]=3	20	cop	_	_
 20	manta	_	ADP	_	Case=Abl	22	case	_	_
@@ -9097,7 +9097,7 @@
 # sent_id = squoia_qu-s373
 # text[seg] =  May -pi -s allin yacha -y -niyuq rima -y -niyuq willa -y apa -qkuna ka -nku chay -lla -pi -m prensa -p qispi -sqa ka -y -nin -qa t'ikari -nman hina -lla -taq willa -y apa -qkuna qhawari -qkuna hina -m llamk'a -y -nin -ta hunt'a -nkuman .
 # text =  Mayspi allin yachay niyuq rimay niyuq willay apaqkuna kanku chaylla pi m prensap qispisqa kaynin qa t'ikarinman hinalla taq willay apaqkuna qhawariqkuna hina m llamk'ayninta hunt'ankuman .
-1	Mayspi	_	Root	_	Case=Loc|Evident=IndE	9	nmod:loc	_	_
+1	Mayspi	_	NOUN	_	Case=Loc|Evident=IndE	9	nmod:loc	_	_
 2	allin	_	NOUN	_	_	3	obl	_	_
 3	yachay	_	VERB	_	VerbForm=Inf	4	s.arg	_	_
 4	niyuq	_	NOUN	_	Poss=Yes	6	cc	_	_
@@ -13062,7 +13062,7 @@
 7	,	_	PUNCT	_	_	0	punct	_	_
 8	mana	_	ADV	_	_	15	advmod	_	_
 9	m	_	PART	_	Evident=DirE	15	discourse	_	_
-10	maypaspi	_	Root	_	Case=Add|Case=Loc	13	nmod:loc	_	_
+10	maypaspi	_	NOUN	_	Case=Add|Case=Loc	13	nmod:loc	_	_
 11	chay	_	DET	_	PronType=Dem	12	det	_	_
 12	hinata	_	NOUN	_	Case=Acc	13	nmod	_	_
 13	rikhuq	_	VERB	_	Deriv=Ag|VerbForm=Vnoun	15	hab	_	_
@@ -13284,7 +13284,7 @@
 # sent_id = squoia_qu-s594
 # text[seg] =  May -pi -s prensa qispi -sqa ka -y hark'a -sqa ka -chkan chay -pi -qa , internet -qa willari -y -paq ñancha -ykuna -ta qu -n , pisi mana yacha -sqa -hina rikch'a -ykuna -lla -manta -puni -m .
 # text =  Mayspi prensa qispisqa kay hark'asqa kachkan chay pi qa , internet qa willariypaq ñanchaykunata qun , pisi mana yachasqa rikch'aykunallahinamanta puni m .
-1	Mayspi	_	Root	_	Case=Loc|Evident=IndE	6	nmod:loc	_	_
+1	Mayspi	_	NOUN	_	Case=Loc|Evident=IndE	6	nmod:loc	_	_
 2	prensa	_	NOUN	_	_	4	subj	_	_
 3	qispisqa	_	VERB	_	Aspect=Perf	4	pred	_	_
 4	kay	_	AUX	_	VerbForm=Inf	6	cop	_	_
@@ -27269,7 +27269,7 @@
 4	nuqa	_	Root	_	_	10	subj	_	_
 5	qa	_	PART	_	Topic=Yes	4	discourse	_	_
 6	manaña	_	ADV	_	_	10	advmod	_	_
-7	nuqapi	_	Root	_	Case=Loc	10	nmod:loc	_	_
+7	nuqapi	_	NOUN	_	Case=Loc	10	nmod:loc	_	_
 8	ña	_	PART	_	_	7	discourse	_	_
 9	chu	_	PART	_	_	10	discourse	_	_
 10	kani	_	AUX	_	_	0	cop	_	_
@@ -27588,7 +27588,7 @@
 # sent_id = squoia_qu-s1363
 # text[seg] =  May -pi -n pobre wawa -y KAN ? ni -ran -chá .
 # text =  Maypi n pobre waway KAN ? niran chá .
-1	Maypi	_	Root	_	Case=Loc	5	nmod:loc	_	_
+1	Maypi	_	NOUN	_	Case=Loc	5	nmod:loc	_	_
 2	n	_	PART	_	Evident=DirE	5	discourse	_	_
 3	pobre	_	NOUN	_	_	4	nmod	_	_
 4	waway	_	NOUN	_	Number[psor]=Sing|Person[psor]=1	5	subj	_	_
@@ -27601,7 +27601,7 @@
 # sent_id = squoia_qu-s1364
 # text[seg] =  May -pi -n Gregorio -y KAN ?
 # text =  Maypi n Gregorioy KAN ?
-1	Maypi	_	Root	_	Case=Loc	4	nmod:loc	_	_
+1	Maypi	_	NOUN	_	Case=Loc	4	nmod:loc	_	_
 2	n	_	PART	_	Evident=DirE	4	discourse	_	_
 3	Gregorioy	_	NOUN	_	Number[psor]=Sing|Person[psor]=1	4	subj	_	_
 4	KAN	_	AUX	_	_	0	cop	_	_
@@ -29367,7 +29367,7 @@
 7	sino	_	Root	_	_	11	linker	_	_
 8	mala	_	NOUN	_	_	9	nmod	_	_
 9	suerte	_	NOUN	_	_	11	subj	_	_
-10	nuqapi	_	Root	_	Case=Loc	11	nmod:loc	_	_
+10	nuqapi	_	NOUN	_	Case=Loc	11	nmod:loc	_	_
 11	pegasqa	_	VERB	_	Aspect=Perf	0	root	_	_
 12	KAN	_	AUX	_	_	11	cop	_	_
 13	.	_	PUNCT	_	_	11	punct	_	_
@@ -29692,7 +29692,7 @@
 6	n	_	PART	_	Evident=DirE	8	discourse	_	_
 7	mana	_	ADV	_	_	8	advmod	_	_
 8	chinkanchu	_	VERB	_	_	17	cc	_	_
-9	maypi	_	Root	_	Case=Loc	11	nmod:loc	_	_
+9	maypi	_	NOUN	_	Case=Loc	11	nmod:loc	_	_
 10	chá	_	PART	_	_	11	discourse	_	_
 11	tiyaruni	_	VERB	_	Deriv=Rptn	12	rep	_	_
 12	chay	_	DET	_	PronType=Dem	13	det	_	_
@@ -29716,7 +29716,7 @@
 1	Bueno	_	NOUN	_	_	21	dm	_	_
 2	,	_	PUNCT	_	_	3	punct	_	_
 3	urqupi	_	NOUN	_	Case=Loc	4	p.arg	_	_
-4	hina	_	Root	_	_	6	nmod:loc	_	_
+4	hina	_	NOUN	_	_	6	nmod:loc	_	_
 5	uwihachakuna	_	NOUN	_	Deriv=Dim|Number=Plur	6	obj	_	_
 6	michimusqayman	_	VERB	_	Aspect=Perf|Number[psor]=Sing|Person[psor]=1	7	p.arg	_	_
 7	hina	_	NOUN	_	_	21	nmod	_	_
@@ -30912,7 +30912,7 @@
 24	wa	_	VPers	_	_	23	s.iobj	_	_
 25	n	_	VPers	_	_	23	s.subj	_	_
 26	:	_	PUNCT	_	_	20	punct	_	_
-27	May	_	Root	_	_	30	nmod:loc	_	_
+27	May	_	NOUN	_	_	30	nmod:loc	_	_
 28	mi	_	PART	_	Evident=DirE	30	discourse	_	_
 29	asnokuna	_	NUM	_	Number=Plur	30	subj	_	_
 30	KAN	_	AUX	_	_	23	cop	_	_
@@ -38236,7 +38236,7 @@
 1	Icha	_	CCONJ	_	_	18	conj	_	_
 2	qa	_	PART	_	Topic=Yes	1	discourse	_	_
 3	,	_	PUNCT	_	_	4	punct	_	_
-4	maypaspi	_	Root	_	Case=Add|Case=Loc	9	nmod:loc	_	_
+4	maypaspi	_	NOUN	_	Case=Add|Case=Loc	9	nmod:loc	_	_
 5	papata	_	NOUN	_	Case=Acc	9	obj	_	_
 6	musuq	_	NOUN	_	_	7	obl	_	_
 7	tarpuyta	_	VERB	_	Case=Acc|VerbForm=Inf	8	s.arg	_	_
